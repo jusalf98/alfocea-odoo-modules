@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="subscription_contract_view_list" model="ir.ui.view">
+        <field name="name">subscription.contract.list</field>
+        <field name="model">subscription.contract</field>
+        <field name="arch" type="xml">
+            <list sample="1">
+                <field name="name" />
+                <field name="contract_type" optional="hide" />
+                <field name="partner_id" />
+                <field name="plan_id" />
+                <field name="date_start" />
+                <field name="next_invoice_date" />
+                <field
+                    name="company_id"
+                    groups="base.group_multi_company"
+                    optional="show"
+                />
+                <field name="currency_id" column_invisible="True" />
+                <field name="amount_total" sum="Total" />
+                <field
+                    name="state"
+                    widget="badge"
+                    decoration-info="state == 'draft'"
+                    decoration-warning="state in ('trial', 'paused')"
+                    decoration-success="state == 'active'"
+                    decoration-muted="state in ('cancelled', 'expired')"
+                />
+            </list>
+        </field>
+    </record>
+
+    <record id="subscription_contract_view_form" model="ir.ui.view">
+        <field name="name">subscription.contract.form</field>
+        <field name="model">subscription.contract</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_start"
+                        type="object"
+                        string="Start"
+                        class="btn-primary"
+                        invisible="state != 'draft'"
+                    />
+                    <button
+                        name="action_resume"
+                        type="object"
+                        string="Resume"
+                        class="btn-primary"
+                        invisible="state != 'paused'"
+                    />
+                    <button
+                        name="action_pause"
+                        type="object"
+                        string="Pause"
+                        invisible="state not in ('trial', 'active')"
+                    />
+                    <button
+                        name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        invisible="state in ('cancelled', 'expired')"
+                        confirm="Are you sure you want to cancel this subscription?"
+                    />
+                    <button
+                        name="action_set_draft"
+                        type="object"
+                        string="Reset to Draft"
+                        invisible="state != 'cancelled'"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,trial,active"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="partner">
+                            <field
+                                name="contract_type"
+                                widget="radio"
+                                options="{'horizontal': true}"
+                                readonly="state != 'draft'"
+                            />
+                            <label
+                                for="partner_id"
+                                string="Customer"
+                                invisible="contract_type != 'sale'"
+                            />
+                            <label
+                                for="partner_id"
+                                string="Vendor"
+                                invisible="contract_type != 'purchase'"
+                            />
+                            <field
+                                name="partner_id"
+                                nolabel="1"
+                                readonly="state != 'draft'"
+                            />
+                            <field name="plan_id" readonly="state != 'draft'" />
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                                readonly="state != 'draft'"
+                            />
+                            <field name="currency_id" invisible="1" />
+                        </group>
+                        <group name="dates">
+                            <field name="date_start" readonly="state != 'draft'" />
+                            <field
+                                name="date_end"
+                                readonly="state in ('cancelled', 'expired')"
+                            />
+                            <field
+                                name="trial_end_date"
+                                invisible="not trial_end_date"
+                            />
+                            <field
+                                name="next_invoice_date"
+                                readonly="state in ('cancelled', 'expired')"
+                            />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="lines" string="Lines">
+                            <field
+                                name="line_ids"
+                                readonly="state in ('cancelled', 'expired')"
+                            >
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="product_id" />
+                                    <field name="name" />
+                                    <field name="quantity" />
+                                    <field name="price_unit" />
+                                    <field name="currency_id" column_invisible="True" />
+                                    <field name="price_subtotal" />
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer" name="totals">
+                                <field name="amount_total" />
+                            </group>
+                        </page>
+                        <page name="notes" string="Notes">
+                            <field name="note" placeholder="Terms and conditions..." />
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="subscription_contract_view_kanban" model="ir.ui.view">
+        <field name="name">subscription.contract.kanban</field>
+        <field name="model">subscription.contract</field>
+        <field name="arch" type="xml">
+            <kanban
+                default_group_by="state"
+                class="o_kanban_mobile"
+                records_draggable="0"
+                quick_create="0"
+                sample="1"
+            >
+                <field name="currency_id" />
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex mb-1">
+                            <field name="name" class="fw-bold fs-5" />
+                            <field
+                                name="amount_total"
+                                widget="monetary"
+                                class="ms-auto fw-bold"
+                            />
+                        </div>
+                        <field name="partner_id" />
+                        <field name="plan_id" class="text-muted" />
+                        <footer>
+                            <field name="activity_ids" widget="kanban_activity" />
+                            <field name="next_invoice_date" class="ms-auto" />
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="subscription_contract_view_search" model="ir.ui.view">
+        <field name="name">subscription.contract.search</field>
+        <field name="model">subscription.contract</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="plan_id" />
+                <filter
+                    name="sale"
+                    string="Customer Subscriptions"
+                    domain="[('contract_type', '=', 'sale')]"
+                />
+                <filter
+                    name="purchase"
+                    string="Vendor Subscriptions"
+                    domain="[('contract_type', '=', 'purchase')]"
+                />
+                <separator />
+                <filter
+                    name="draft"
+                    string="Draft"
+                    domain="[('state', '=', 'draft')]"
+                />
+                <filter
+                    name="running"
+                    string="Running"
+                    domain="[('state', 'in', ('trial', 'active'))]"
+                />
+                <filter
+                    name="paused"
+                    string="Paused"
+                    domain="[('state', '=', 'paused')]"
+                />
+                <filter
+                    name="closed"
+                    string="Cancelled or Expired"
+                    domain="[('state', 'in', ('cancelled', 'expired'))]"
+                />
+                <separator />
+                <filter
+                    name="to_invoice"
+                    string="To Invoice"
+                    domain="[('state', 'in', ('trial', 'active')), ('next_invoice_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_by_type"
+                        string="Contract Type"
+                        context="{'group_by': 'contract_type'}"
+                    />
+                    <filter
+                        name="group_by_state"
+                        string="Status"
+                        context="{'group_by': 'state'}"
+                    />
+                    <filter
+                        name="group_by_plan"
+                        string="Plan"
+                        context="{'group_by': 'plan_id'}"
+                    />
+                    <filter
+                        name="group_by_partner"
+                        string="Partner"
+                        context="{'group_by': 'partner_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Generic action (both types), used by the plan smart button -->
+    <record id="subscription_contract_action" model="ir.actions.act_window">
+        <field name="name">Subscriptions</field>
+        <field name="res_model">subscription.contract</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_group_by_type': 1}</field>
+    </record>
+
+    <record id="subscription_contract_sale_action" model="ir.actions.act_window">
+        <field name="name">Customer Subscriptions</field>
+        <field name="res_model">subscription.contract</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('contract_type', '=', 'sale')]</field>
+        <field name="context">{'default_contract_type': 'sale'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first customer subscription
+            </p>
+            <p>Choose a customer and a plan, add the products and start it.</p>
+        </field>
+    </record>
+
+    <record id="subscription_contract_purchase_action" model="ir.actions.act_window">
+        <field name="name">Vendor Subscriptions</field>
+        <field name="res_model">subscription.contract</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('contract_type', '=', 'purchase')]</field>
+        <field name="context">{'default_contract_type': 'purchase'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register your first vendor subscription
+            </p>
+            <p>Track the software, hosting or services you pay for regularly.</p>
+        </field>
+    </record>
+</odoo>

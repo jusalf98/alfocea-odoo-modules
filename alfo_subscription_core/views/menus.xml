@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+        id="menu_subscription_root"
+        name="Subscriptions"
+        groups="group_subscription_user"
+        web_icon="alfo_subscription_core,static/description/icon.png"
+        sequence="25"
+    />
+
+    <menuitem
+        id="subscription_contract_sale_menu"
+        name="Customer Subscriptions"
+        parent="menu_subscription_root"
+        action="subscription_contract_sale_action"
+        sequence="10"
+    />
+
+    <menuitem
+        id="subscription_contract_purchase_menu"
+        name="Vendor Subscriptions"
+        parent="menu_subscription_root"
+        action="subscription_contract_purchase_action"
+        sequence="20"
+    />
+
+    <menuitem
+        id="menu_subscription_configuration"
+        name="Configuration"
+        parent="menu_subscription_root"
+        groups="group_subscription_manager"
+        sequence="100"
+    />
+
+    <menuitem
+        id="subscription_plan_menu"
+        name="Plans"
+        parent="menu_subscription_configuration"
+        action="subscription_plan_action"
+        sequence="10"
+    />
+</odoo>

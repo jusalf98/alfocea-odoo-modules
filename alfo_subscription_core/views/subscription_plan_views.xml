@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="subscription_plan_view_list" model="ir.ui.view">
+        <field name="name">subscription.plan.list</field>
+        <field name="model">subscription.plan</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="interval" />
+                <field name="periodicity" />
+                <field name="trial_days" />
+                <field name="contract_count" />
+                <field name="company_id" groups="base.group_multi_company" />
+            </list>
+        </field>
+    </record>
+
+    <record id="subscription_plan_view_form" model="ir.ui.view">
+        <field name="name">subscription.plan.form</field>
+        <field name="model">subscription.plan</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_contracts"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-refresh"
+                        >
+                            <field
+                                name="contract_count"
+                                widget="statinfo"
+                                string="Contracts"
+                            />
+                        </button>
+                    </div>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="text-bg-danger"
+                        invisible="active"
+                    />
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1>
+                            <field name="name" placeholder="e.g. Monthly Plan" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="billing">
+                            <label for="interval" />
+                            <div class="o_row">
+                                <field name="interval" class="oe_inline" />
+                                <field name="periodicity" class="oe_inline" />
+                            </div>
+                            <field name="trial_days" />
+                        </group>
+                        <group name="other">
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                            />
+                            <field name="active" invisible="1" />
+                        </group>
+                    </group>
+                    <field
+                        name="description"
+                        placeholder="Internal description of the plan..."
+                    />
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="subscription_plan_view_kanban" model="ir.ui.view">
+        <field name="name">subscription.plan.kanban</field>
+        <field name="model">subscription.plan</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bold fs-5" />
+                        <div class="text-muted">
+                            Every <field name="interval" /> <field name="periodicity" />
+                        </div>
+                        <footer>
+                            <span invisible="not trial_days">
+                                <field name="trial_days" /> trial days
+                            </span>
+                            <span class="ms-auto">
+                                <field name="contract_count" /> contracts
+                            </span>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="subscription_plan_view_search" model="ir.ui.view">
+        <field name="name">subscription.plan.search</field>
+        <field name="model">subscription.plan</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <filter
+                    name="with_trial"
+                    string="With Trial"
+                    domain="[('trial_days', '>', 0)]"
+                />
+                <separator />
+                <filter
+                    name="inactive"
+                    string="Archived"
+                    domain="[('active', '=', False)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_by_periodicity"
+                        string="Periodicity"
+                        context="{'group_by': 'periodicity'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="subscription_plan_action" model="ir.actions.act_window">
+        <field name="name">Plans</field>
+        <field name="res_model">subscription.plan</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="help" type="html">
+            <p
+                class="o_view_nocontent_smiling_face"
+            >Create your first subscription plan</p>
+            <p>Plans define how often a subscription is invoiced and its free trial.</p>
+        </field>
+    </record>
+</odoo>

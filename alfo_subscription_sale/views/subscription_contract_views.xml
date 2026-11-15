@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="subscription_contract_view_form_inherit" model="ir.ui.view">
+        <field name="model">subscription.contract</field>
+        <field
+            name="inherit_id"
+            ref="alfo_subscription_core.subscription_contract_view_form"
+        />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_sale_orders"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-dollar"
+                    invisible="not sale_order_count"
+                    groups="sales_team.group_sale_salesman"
+                >
+                    <field
+                        name="sale_order_count"
+                        widget="statinfo"
+                        string="Sale Orders"
+                    />
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="seq_subscription_contract" model="ir.sequence">
+        <field name="name">Subscription Contract</field>
+        <field name="code">subscription.contract</field>
+        <field name="prefix">SUB/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False" />
+    </record>
+
+    <record id="seq_subscription_contract_purchase" model="ir.sequence">
+        <field name="name">Vendor Subscription Contract</field>
+        <field name="code">subscription.contract.purchase</field>
+        <field name="prefix">PSUB/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False" />
+    </record>
+</odoo>

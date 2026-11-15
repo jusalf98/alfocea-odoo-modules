@@ -1,0 +1,22 @@
+{
+    "name": "Subscription Core",
+    "summary": "Subscription plans and recurring contracts",
+    "version": "18.0.1.0.0",
+    "category": "Sales",
+    "website": "https://github.com/jusalf98/alfocea-odoo-modules",
+    "author": "Justo Alfocea Frutos",
+    "license": "LGPL-3",
+    "depends": ["base", "mail", "product"],
+    "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "data/ir_sequence_data.xml",
+        "data/ir_cron_data.xml",
+        "views/subscription_plan_views.xml",
+        "views/subscription_contract_views.xml",
+        "views/product_template_views.xml",
+        "views/menus.xml",
+    ],
+    "installable": True,
+    "application": True,
+}
