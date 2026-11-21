@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+        id="menu_subscription_reporting"
+        name="Reporting"
+        parent="alfo_subscription_core.menu_subscription_root"
+        sequence="90"
+    />
+    <menuitem
+        id="subscription_mrr_menu"
+        name="Recurring Revenue (MRR)"
+        parent="menu_subscription_reporting"
+        action="subscription_mrr_action"
+        sequence="10"
+    />
+    <menuitem
+        id="subscription_new_menu"
+        name="New Subscriptions"
+        parent="menu_subscription_reporting"
+        action="subscription_new_action"
+        sequence="20"
+    />
+    <menuitem
+        id="subscription_churn_menu"
+        name="Churn"
+        parent="menu_subscription_reporting"
+        action="subscription_churn_action"
+        sequence="30"
+    />
+    <menuitem
+        id="subscription_vendor_cost_menu"
+        name="Recurring Costs"
+        parent="menu_subscription_reporting"
+        action="subscription_vendor_cost_action"
+        sequence="40"
+    />
+</odoo>

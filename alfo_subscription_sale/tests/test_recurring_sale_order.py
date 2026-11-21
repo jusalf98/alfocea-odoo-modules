@@ -106,7 +106,7 @@ class TestRecurringSaleOrder(AlfoSubscriptionSaleCommon):
         self.assertEqual(len(renewal), 1)
         self.assertEqual(renewal.user_id, self.salesman)
 
-    @mute_logger("odoo.addons.alfo_subscription_sale.models.subscription_contract")
+    @mute_logger("odoo.addons.alfo_subscription_core.models.subscription_contract")
     def test_error_in_one_contract_does_not_block_others(self):
         failing = self._create_running_contract(self.today)
         healthy = self._create_running_contract(self.today)

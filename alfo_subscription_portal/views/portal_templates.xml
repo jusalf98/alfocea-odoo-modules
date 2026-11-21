@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- My Account: Subscriptions entry -->
+    <template
+        id="portal_my_home_subscription"
+        name="Subscriptions"
+        customize_show="True"
+        inherit_id="portal.portal_my_home"
+        priority="40"
+    >
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True" />
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t
+                    t-set="icon"
+                    t-value="'/alfo_subscription_portal/static/description/icon.png'"
+                />
+                <t t-set="title">Subscriptions</t>
+                <t t-set="url" t-value="'/my/subscriptions'" />
+                <t t-set="text">Follow, download, pause or cancel your subscriptions</t>
+                <t t-set="placeholder_count" t-value="'subscription_count'" />
+            </t>
+        </div>
+    </template>
+
+    <template
+        id="portal_breadcrumbs_subscription"
+        name="Portal layout: subscription entries"
+        inherit_id="portal.portal_breadcrumbs"
+        priority="40"
+    >
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li
+                t-if="page_name == 'subscription'"
+                t-attf-class="breadcrumb-item #{'active ' if not subscription else ''}"
+            >
+                <a
+                    t-if="subscription"
+                    t-attf-href="/my/subscriptions?{{ keep_query() }}"
+                >Subscriptions</a>
+                <t t-else="">Subscriptions</t>
+            </li>
+            <li
+                t-if="page_name == 'subscription' and subscription"
+                class="breadcrumb-item active"
+                t-out="subscription.name"
+            />
+        </xpath>
+    </template>
+
+    <!-- List -->
+    <template id="portal_my_subscriptions" name="My Subscriptions">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Subscriptions</t>
+            </t>
+            <div t-if="not subscriptions" class="alert alert-warning" role="alert">
+                There are no subscriptions.
+            </div>
+            <t t-if="subscriptions" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Subscription</th>
+                        <th>Plan</th>
+                        <th class="text-end">Next Invoice</th>
+                        <th class="text-end">Total per period</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="subscriptions" t-as="subscription">
+                        <td>
+                            <a
+                                t-att-href="subscription.get_portal_url()"
+                                t-out="subscription.name"
+                            />
+                        </td>
+                        <td>
+                            <span t-field="subscription.plan_id" />
+                            <small
+                                class="text-muted d-block"
+                                t-out="subscription.plan_id.billing_label"
+                            />
+                        </td>
+                        <td class="text-end">
+                            <span t-field="subscription.next_invoice_date" />
+                        </td>
+                        <td class="text-end">
+                            <span t-field="subscription.amount_total" />
+                        </td>
+                        <td class="text-center">
+                            <span
+                                class="badge rounded-pill text-bg-info"
+                                t-field="subscription.state"
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!-- Detail -->
+    <template id="portal_my_subscription" name="My Subscription">
+        <t t-call="portal.portal_layout">
+            <t t-set="object" t-value="subscription" />
+            <div t-if="message" class="alert alert-success mt-3" role="status">
+                Your request has been saved.
+            </div>
+            <div class="card mt-3">
+                <div class="card-header d-flex flex-wrap align-items-center gap-2">
+                    <h4 class="mb-0 me-auto">
+                        Subscription <span t-field="subscription.name" />
+                    </h4>
+                    <span
+                        class="badge rounded-pill text-bg-info"
+                        t-field="subscription.state"
+                    />
+                    <a
+                        class="btn btn-secondary btn-sm"
+                        t-att-href="subscription.get_portal_url(report_type='pdf', download=True)"
+                    >
+                        <i class="fa fa-download" /> Download
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6 col-md-3 mb-2">
+                            <strong>Plan</strong>
+                            <div t-field="subscription.plan_id" />
+                        </div>
+                        <div class="col-6 col-md-3 mb-2">
+                            <strong>Billing</strong>
+                            <div
+                                t-out="(subscription.plan_id.billing_label or '').capitalize()"
+                            />
+                        </div>
+                        <div class="col-6 col-md-3 mb-2">
+                            <strong>Start Date</strong>
+                            <div t-field="subscription.date_start" />
+                        </div>
+                        <div
+                            class="col-6 col-md-3 mb-2"
+                            t-if="subscription.next_invoice_date"
+                        >
+                            <strong>Next Invoice</strong>
+                            <div t-field="subscription.next_invoice_date" />
+                        </div>
+                        <div
+                            class="col-6 col-md-3 mb-2"
+                            t-if="subscription.state == 'trial'"
+                        >
+                            <strong>Free Trial Until</strong>
+                            <div t-field="subscription.trial_end_date" />
+                        </div>
+                        <div class="col-6 col-md-3 mb-2" t-if="subscription.date_end">
+                            <strong>End Date</strong>
+                            <div t-field="subscription.date_end" />
+                        </div>
+                        <div
+                            class="col-6 col-md-3 mb-2"
+                            t-if="subscription.do_not_renew"
+                        >
+                            <strong>Renewal</strong>
+                            <div>Will not be renewed</div>
+                        </div>
+                    </div>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th class="text-end">Quantity</th>
+                                <th class="text-end">Unit Price</th>
+                                <th class="text-end">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="subscription.line_ids" t-as="line">
+                                <td>
+                                    <span t-field="line.name" />
+                                </td>
+                                <td class="text-end">
+                                    <span t-field="line.quantity" />
+                                </td>
+                                <td class="text-end">
+                                    <span t-field="line.price_unit" />
+                                </td>
+                                <td class="text-end">
+                                    <span t-field="line.price_subtotal" />
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end">
+                                    <strong>Total per period</strong>
+                                </td>
+                                <td class="text-end">
+                                    <strong t-field="subscription.amount_total" />
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="d-flex flex-wrap gap-2">
+                        <t t-set="confirm_pause">Pause this subscription?</t>
+                        <t t-set="confirm_cancel">Cancel this subscription?</t>
+                        <t t-set="confirm_stop">Do not renew this subscription?</t>
+                        <t t-call="alfo_subscription_portal.portal_subscription_action">
+                            <t
+                                t-set="allowed"
+                                t-value="subscription._portal_can_pause()"
+                            />
+                            <t t-set="action" t-value="'pause'" />
+                            <t t-set="confirm_text" t-value="confirm_pause" />
+                            <t t-set="button_class" t-value="'btn-secondary'" />
+                            <t t-set="label">Pause</t>
+                        </t>
+                        <t t-call="alfo_subscription_portal.portal_subscription_action">
+                            <t
+                                t-set="allowed"
+                                t-value="subscription._portal_can_resume()"
+                            />
+                            <t t-set="action" t-value="'resume'" />
+                            <t t-set="confirm_text" t-value="False" />
+                            <t t-set="button_class" t-value="'btn-primary'" />
+                            <t t-set="label">Resume</t>
+                        </t>
+                        <t t-call="alfo_subscription_portal.portal_subscription_action">
+                            <t
+                                t-set="allowed"
+                                t-value="subscription._portal_can_stop_renewal()"
+                            />
+                            <t t-set="action" t-value="'stop_renewal'" />
+                            <t t-set="confirm_text" t-value="confirm_stop" />
+                            <t t-set="button_class" t-value="'btn-outline-danger'" />
+                            <t t-set="label">Do not renew</t>
+                        </t>
+                        <t t-call="alfo_subscription_portal.portal_subscription_action">
+                            <t
+                                t-set="allowed"
+                                t-value="subscription._portal_can_cancel()"
+                            />
+                            <t t-set="action" t-value="'cancel'" />
+                            <t t-set="confirm_text" t-value="confirm_cancel" />
+                            <t t-set="button_class" t-value="'btn-outline-danger'" />
+                            <t t-set="label">Cancel subscription</t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <h4>Communication history</h4>
+                <t t-call="portal.message_thread" />
+            </div>
+        </t>
+    </template>
+
+    <!-- One customer action (POST form with CSRF token) -->
+    <template id="portal_subscription_action" name="Subscription portal action">
+        <form
+            t-if="allowed"
+            method="post"
+            t-att-action="'/my/subscriptions/%s/%s' % (subscription.id, action)"
+            t-att-data-confirm="confirm_text or None"
+            t-att-onsubmit="confirm_text and 'return confirm(this.dataset.confirm)' or None"
+        >
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+            <input type="hidden" name="access_token" t-att-value="access_token or ''" />
+            <button
+                type="submit"
+                t-attf-class="btn btn-sm #{button_class}"
+                t-out="label"
+            />
+        </form>
+    </template>
+</odoo>

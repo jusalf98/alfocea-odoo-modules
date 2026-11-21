@@ -1,7 +1,7 @@
 {
     "name": "Subscription Sale",
     "summary": "Create and start subscriptions automatically from sale orders",
-    "version": "18.0.1.0.0",
+    "version": "18.0.1.6.0",
     "category": "Sales",
     "website": "https://github.com/jusalf98/alfocea-odoo-modules",
     "author": "Justo Alfocea Frutos",
@@ -13,5 +13,6 @@
         "views/subscription_contract_views.xml",
         "views/subscription_plan_views.xml",
     ],
+    "post_init_hook": "post_init_hook",
     "installable": True,
 }

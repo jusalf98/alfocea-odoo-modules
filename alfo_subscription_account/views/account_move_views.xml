@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_move_form_inherit" model="ir.ui.view">
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_subscription_contract"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-refresh"
+                    string="Subscription"
+                    invisible="not subscription_contract_id"
+                    groups="alfo_subscription_core.group_subscription_user"
+                >
+                    <field name="subscription_contract_id" invisible="1" />
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

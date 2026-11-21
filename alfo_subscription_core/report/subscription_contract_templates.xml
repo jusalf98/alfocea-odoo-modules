@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_subscription_contract_document">
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+            <t t-set="address">
+                <div
+                    t-field="doc.partner_id"
+                    t-options='{"widget": "contact", "fields": ["address", "name", "phone", "email"], "no_marker": True}'
+                />
+                <p t-if="doc.partner_id.vat">
+                    Tax ID: <span t-field="doc.partner_id.vat" />
+                </p>
+            </t>
+            <div class="page">
+                <h2 class="mt-4">
+                    <span
+                        t-if="doc.contract_type == 'sale'"
+                    >Customer Subscription</span>
+                    <span t-else="">Vendor Subscription</span>
+                    <span t-field="doc.name" />
+                </h2>
+
+                <!-- Two rows of at most 4 columns: wkhtmltopdf does not wrap them -->
+                <div class="row mt-4" id="informations">
+                    <div class="col-3 mb-2" name="plan">
+                        <strong>Plan</strong>
+                        <div t-field="doc.plan_id" />
+                    </div>
+                    <div class="col-3 mb-2" name="billing">
+                        <strong>Billing</strong>
+                        <div t-out="(doc.plan_id.billing_label or '').capitalize()" />
+                    </div>
+                    <div class="col-3 mb-2" name="state">
+                        <strong>Status</strong>
+                        <div t-field="doc.state" />
+                    </div>
+                    <div class="col-3 mb-2" name="date_start">
+                        <strong>Start Date</strong>
+                        <div t-field="doc.date_start" />
+                    </div>
+                </div>
+                <div class="row mb-4" id="dates">
+                    <div
+                        t-if="doc.trial_end_date"
+                        class="col-3 mb-2"
+                        name="trial_end_date"
+                    >
+                        <strong>Free Trial Until</strong>
+                        <div t-field="doc.trial_end_date" />
+                    </div>
+                    <div
+                        t-if="doc.next_invoice_date"
+                        class="col-3 mb-2"
+                        name="next_invoice_date"
+                    >
+                        <strong>Next Invoice Date</strong>
+                        <div t-field="doc.next_invoice_date" />
+                    </div>
+                    <div t-if="doc.date_end" class="col-3 mb-2" name="date_end">
+                        <strong>End Date</strong>
+                        <div t-field="doc.date_end" />
+                    </div>
+                </div>
+
+                <table
+                    class="table table-sm o_main_table table-borderless mt-4"
+                    name="subscription_lines"
+                >
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th
+                                name="th_description"
+                                class="text-start"
+                            >Description</th>
+                            <th name="th_quantity" class="text-end">Quantity</th>
+                            <th name="th_price_unit" class="text-end">Unit Price</th>
+                            <th name="th_subtotal" class="text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="doc.line_ids" t-as="line">
+                            <td name="td_name">
+                                <span t-field="line.name" />
+                            </td>
+                            <td name="td_quantity" class="text-end">
+                                <span t-field="line.quantity" />
+                            </td>
+                            <td name="td_price_unit" class="text-end">
+                                <span t-field="line.price_unit" />
+                            </td>
+                            <td name="td_subtotal" class="text-end o_price_total">
+                                <span t-field="line.price_subtotal" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="clearfix" name="total_summary">
+                    <div id="total" class="row">
+                        <div class="col-6 ms-auto">
+                            <table class="table table-sm table-borderless">
+                                <tr class="border-black o_total">
+                                    <td>
+                                        <strong>Total per period</strong>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="doc.amount_total" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div t-if="not is_html_empty(doc.note)" name="note" class="mt-4">
+                    <strong>Terms and Conditions</strong>
+                    <div t-field="doc.note" />
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_subscription_contract">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t
+                    t-call="alfo_subscription_core.report_subscription_contract_document"
+                    t-lang="doc.partner_id.lang"
+                />
+            </t>
+        </t>
+    </template>
+</odoo>

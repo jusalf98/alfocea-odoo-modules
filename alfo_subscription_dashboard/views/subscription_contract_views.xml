@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Analysis views of the subscriptions -->
+    <record id="subscription_contract_view_pivot" model="ir.ui.view">
+        <field name="name">subscription.contract.pivot</field>
+        <field name="model">subscription.contract</field>
+        <field name="arch" type="xml">
+            <pivot string="Subscriptions Analysis" sample="1">
+                <field name="plan_id" type="row" />
+                <field name="state" type="col" />
+                <field name="recurring_monthly" type="measure" />
+                <field name="recurring_yearly" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="subscription_contract_view_graph" model="ir.ui.view">
+        <field name="name">subscription.contract.graph</field>
+        <field name="model">subscription.contract</field>
+        <field name="arch" type="xml">
+            <graph string="Subscriptions Analysis" type="bar" sample="1">
+                <field name="plan_id" />
+                <field name="recurring_monthly" type="measure" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="subscription_contract_view_search_analysis" model="ir.ui.view">
+        <field name="model">subscription.contract</field>
+        <field
+            name="inherit_id"
+            ref="alfo_subscription_core.subscription_contract_view_search"
+        />
+        <field name="arch" type="xml">
+            <filter name="running" position="after">
+                <filter
+                    name="active_only"
+                    string="Active (paying)"
+                    domain="[('state', '=', 'active')]"
+                />
+            </filter>
+            <filter name="group_by_partner" position="after">
+                <filter
+                    name="group_by_start_month"
+                    string="Start Month"
+                    context="{'group_by': 'date_start:month'}"
+                />
+                <filter
+                    name="group_by_closed_month"
+                    string="Close Month"
+                    context="{'group_by': 'date_closed:month'}"
+                />
+                <filter
+                    name="group_by_close_reason"
+                    string="Close Reason"
+                    context="{'group_by': 'close_reason_id'}"
+                />
+            </filter>
+        </field>
+    </record>
+
+    <!-- MRR of the active customer subscriptions, by plan -->
+    <record id="subscription_mrr_action" model="ir.actions.act_window">
+        <field name="name">Recurring Revenue (MRR)</field>
+        <field name="res_model">subscription.contract</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field name="domain">[('contract_type', '=', 'sale')]</field>
+        <field
+            name="context"
+        >{'search_default_active_only': 1, 'graph_measure': 'recurring_monthly', 'graph_groupbys': ['plan_id'], 'pivot_measures': ['recurring_monthly', 'recurring_yearly', '__count']}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No active subscriptions yet</p>
+            <p>The monthly recurring revenue of the active customer subscriptions.</p>
+        </field>
+    </record>
+
+    <!-- New subscriptions by month -->
+    <record id="subscription_new_action" model="ir.actions.act_window">
+        <field name="name">New Subscriptions</field>
+        <field name="res_model">subscription.contract</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field
+            name="domain"
+        >[('contract_type', '=', 'sale'), ('state', '!=', 'draft')]</field>
+        <field
+            name="context"
+        >{'graph_mode': 'line', 'graph_measure': '__count', 'graph_groupbys': ['date_start:month'], 'pivot_row_groupby': ['date_start:month'], 'pivot_measures': ['__count', 'recurring_monthly']}</field>
+    </record>
+
+    <!-- Churn: closed subscriptions by month and reason -->
+    <record id="subscription_churn_action" model="ir.actions.act_window">
+        <field name="name">Churn</field>
+        <field name="res_model">subscription.contract</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field
+            name="domain"
+        >[('contract_type', '=', 'sale'), ('state', 'in', ('cancelled', 'expired'))]</field>
+        <field
+            name="context"
+        >{'graph_measure': 'recurring_monthly', 'graph_groupbys': ['date_closed:month', 'close_reason_id'], 'pivot_row_groupby': ['date_closed:month'], 'pivot_column_groupby': ['close_reason_id'], 'pivot_measures': ['__count', 'recurring_monthly']}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No cancelled subscriptions</p>
+            <p>Cancelled and expired customer subscriptions, by month and reason.</p>
+        </field>
+    </record>
+
+    <!-- Recurring cost of the vendor subscriptions -->
+    <record id="subscription_vendor_cost_action" model="ir.actions.act_window">
+        <field name="name">Recurring Costs</field>
+        <field name="res_model">subscription.contract</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field name="domain">[('contract_type', '=', 'purchase')]</field>
+        <field
+            name="context"
+        >{'search_default_active_only': 1, 'graph_measure': 'recurring_monthly', 'graph_groupbys': ['partner_id'], 'pivot_measures': ['recurring_monthly', 'recurring_yearly', '__count']}</field>
+    </record>
+</odoo>

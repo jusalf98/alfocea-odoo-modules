@@ -39,4 +39,12 @@
         action="subscription_plan_action"
         sequence="10"
     />
+
+    <menuitem
+        id="subscription_close_reason_menu"
+        name="Close Reasons"
+        parent="menu_subscription_configuration"
+        action="subscription_close_reason_action"
+        sequence="20"
+    />
 </odoo>

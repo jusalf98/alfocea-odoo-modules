@@ -29,6 +29,14 @@ class AlfoSubscriptionSaleCommon(BaseCommon):
                 "default_plan_id": cls.plan_trial.id,
             }
         )
+        # Same plan as product_subscription, different product.
+        cls.product_hours = Product.create(
+            {
+                "name": "Consulting Hours",
+                "list_price": 12.0,
+                "default_plan_id": cls.plan_monthly.id,
+            }
+        )
         cls.product_regular = Product.create({"name": "Mug", "list_price": 8.0})
         cls.customer = cls.env["res.partner"].create({"name": "Coffee Shop"})
         # Salesman without any subscription access right: the contract creation

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="subscription_plan_view_form_inherit" model="ir.ui.view">
+        <field name="model">subscription.plan</field>
+        <field
+            name="inherit_id"
+            ref="alfo_subscription_core.subscription_plan_view_form"
+        />
+        <field name="arch" type="xml">
+            <field name="trial_days" position="after">
+                <field name="invoice_auto_post" />
+            </field>
+        </field>
+    </record>
+</odoo>

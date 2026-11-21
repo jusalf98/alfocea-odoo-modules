@@ -33,10 +33,29 @@ a customer subscription for the order customer:
   (product, description, quantity and discounted price in the company
   currency).
 - If the customer already has an open subscription (draft, trial, active
-  or paused) with that plan, no new subscription is created: the order
-  is linked to the existing one.
+  or paused) with that plan **and that product**, the quantity is added
+  to it.
+- A product the customer does not have yet creates a new subscription,
+  unless the plan has **One Subscription per Partner** enabled: then it
+  is added as a new line to the existing one.
+- The order is only linked to the subscriptions that contain its
+  products.
+- Cancelling the order reverts what it changed in the subscriptions.
+- When confirming from the form an order that changes existing
+  subscriptions, a wizard shows what they already have and what the
+  order adds, with three options: **Confirm and Add**, **Confirm without
+  Adding** (the existing subscriptions are not changed; new ones are
+  still created) and **Cancel**.
 - The confirmed order covers the first period, so the first renewal is
-  due one period later (or at the end of the trial).
+  due one period later.
+- **Free trial:** the quotation lines in trial are shown in green. A
+  quotation line whose product starts a new subscription with a trial
+  plan gets a 100% discount and a note in its description ("Free trial:
+  7 days. Then billed every 1 Month(s)."). The customer pays nothing
+  now: the subscription keeps the real price and its first invoice is at
+  the end of the trial. Buying the product again, or adding it to an
+  existing subscription, is never a trial. Only quotations are flagged:
+  confirmed orders keep their discounts.
 - The subscriptions are created as superuser, so salesmen don't need any
   subscription access right to confirm orders.
 

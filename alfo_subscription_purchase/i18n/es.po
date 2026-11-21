@@ -1,0 +1,113 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* alfo_subscription_purchase
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0-20261112\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-21 17:29+0000\n"
+"PO-Revision-Date: 2026-11-21 17:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,field_description:alfo_subscription_purchase.field_subscription_plan__purchase_order_auto_confirm
+msgid "Confirm Renewal Purchase Orders"
+msgstr "Confirmar pedidos de compra de renovación"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,help:alfo_subscription_purchase.field_subscription_plan__purchase_order_auto_confirm
+msgid "Confirm automatically the purchase orders generated on each renewal of the vendor subscriptions with this plan. If unchecked, they are left as requests for quotation to review."
+msgstr "Confirma automáticamente los pedidos de compra generados en cada renovación de las suscripciones de proveedores con este plan. Si no se marca, se quedan como solicitudes de presupuesto para revisarlas."
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,help:alfo_subscription_purchase.field_subscription_contract__renewal_document
+msgid "Document created automatically on each period of the subscription."
+msgstr "Documento que se crea automáticamente en cada periodo de la suscripción."
+
+#. module: alfo_subscription_purchase
+#. odoo-python
+#: code:addons/alfo_subscription_purchase/models/subscription_contract.py:0
+msgid "Only vendor subscriptions can be renewed with purchase orders."
+msgstr "Solo las suscripciones de proveedores se pueden renovar con pedidos de compra."
+
+#. module: alfo_subscription_purchase
+#: model:ir.model,name:alfo_subscription_purchase.model_product_template
+msgid "Product"
+msgstr "Producto"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model,name:alfo_subscription_purchase.model_purchase_order
+#: model:ir.model.fields.selection,name:alfo_subscription_purchase.selection__subscription_contract__renewal_document__purchase_order
+msgid "Purchase Order"
+msgstr "Pedido de compra"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,field_description:alfo_subscription_purchase.field_subscription_contract__purchase_order_count
+msgid "Purchase Order Count"
+msgstr "Número de pedidos de compra"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model,name:alfo_subscription_purchase.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Línea de pedido de compra"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,field_description:alfo_subscription_purchase.field_subscription_contract__purchase_order_ids
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_purchase.subscription_contract_view_form_inherit
+msgid "Purchase Orders"
+msgstr "Pedidos de compra"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,field_description:alfo_subscription_purchase.field_subscription_contract__renewal_document
+msgid "Renewal Document"
+msgstr "Documento de renovación"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model,name:alfo_subscription_purchase.model_subscription_contract
+msgid "Subscription Contract"
+msgstr "Contrato de suscripción"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,field_description:alfo_subscription_purchase.field_purchase_order__subscription_contract_count
+msgid "Subscription Contract Count"
+msgstr "Número de contratos de suscripción"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model,name:alfo_subscription_purchase.model_subscription_contract_line
+msgid "Subscription Contract Line"
+msgstr "Línea de contrato de suscripción"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model,name:alfo_subscription_purchase.model_subscription_plan
+msgid "Subscription Plan"
+msgstr "Plan de suscripción"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,field_description:alfo_subscription_purchase.field_purchase_order__subscription_contract_ids
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_purchase.purchase_order_form_inherit
+msgid "Subscriptions"
+msgstr "Suscripciones"
+
+#. module: alfo_subscription_purchase
+#: model:ir.actions.server,name:alfo_subscription_purchase.ir_cron_subscription_renewal_purchase_orders_ir_actions_server
+msgid "Subscriptions: create renewal purchase orders"
+msgstr "Suscripciones: crear pedidos de compra de renovación"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,field_description:alfo_subscription_purchase.field_product_product__purchase_plan_id
+#: model:ir.model.fields,field_description:alfo_subscription_purchase.field_product_template__purchase_plan_id
+msgid "Vendor Subscription Plan"
+msgstr "Plan de suscripción de proveedor"
+
+#. module: alfo_subscription_purchase
+#: model:ir.model.fields,help:alfo_subscription_purchase.field_product_product__purchase_plan_id
+#: model:ir.model.fields,help:alfo_subscription_purchase.field_product_template__purchase_plan_id
+msgid "When this product is purchased, a vendor subscription with this plan is created and started automatically for the vendor."
+msgstr "Al comprar este producto, se crea e inicia automáticamente para el proveedor una suscripción de proveedor con este plan."

@@ -20,6 +20,27 @@
                     />
                 </button>
             </div>
+            <!-- Both Confirm buttons show the subscription changes before confirming -->
+            <xpath expr="//button[@id='action_confirm']" position="attributes">
+                <attribute
+                    name="context"
+                >{'validate_analytic': True, 'subscription_preview': True}</attribute>
+            </xpath>
+            <xpath
+                expr="//button[@name='action_confirm'][not(@id)]"
+                position="attributes"
+            >
+                <attribute
+                    name="context"
+                >{'validate_analytic': True, 'subscription_preview': True}</attribute>
+            </xpath>
+            <!-- Free trial lines in green -->
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="decoration-success">subscription_trial</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="inside">
+                <field name="subscription_trial" column_invisible="True" />
+            </xpath>
         </field>
     </record>
 </odoo>

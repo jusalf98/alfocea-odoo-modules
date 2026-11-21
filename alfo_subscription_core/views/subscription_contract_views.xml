@@ -51,17 +51,42 @@
                         invisible="state != 'paused'"
                     />
                     <button
-                        name="action_pause"
+                        name="action_end_trial"
+                        type="object"
+                        string="End Trial"
+                        invisible="state != 'trial'"
+                        groups="alfo_subscription_core.group_subscription_manager"
+                        confirm="End the free trial today? The subscription becomes active and the first invoice is brought forward."
+                    />
+                    <button
+                        name="action_open_pause_wizard"
                         type="object"
                         string="Pause"
                         invisible="state not in ('trial', 'active')"
                     />
                     <button
-                        name="action_cancel"
+                        name="action_open_change_plan_wizard"
+                        type="object"
+                        string="Change Plan"
+                        invisible="state not in ('trial', 'active', 'paused')"
+                    />
+                    <button
+                        name="action_do_not_renew"
+                        type="object"
+                        string="Do Not Renew"
+                        invisible="not auto_renew or not date_end or do_not_renew or state in ('draft', 'cancelled', 'expired')"
+                    />
+                    <button
+                        name="action_renew_again"
+                        type="object"
+                        string="Renew Again"
+                        invisible="not do_not_renew or state in ('cancelled', 'expired')"
+                    />
+                    <button
+                        name="action_open_cancel_wizard"
                         type="object"
                         string="Cancel"
                         invisible="state in ('cancelled', 'expired')"
-                        confirm="Are you sure you want to cancel this subscription?"
                     />
                     <button
                         name="action_set_draft"
@@ -112,6 +137,13 @@
                                 readonly="state != 'draft'"
                             />
                             <field name="currency_id" invisible="1" />
+                            <field name="user_id" widget="many2one_avatar_user" />
+                            <field
+                                name="close_reason_id"
+                                invisible="not close_reason_id and state != 'cancelled'"
+                                options="{'no_create': True}"
+                            />
+                            <field name="date_closed" invisible="not date_closed" />
                         </group>
                         <group name="dates">
                             <field name="date_start" readonly="state != 'draft'" />
@@ -119,12 +151,28 @@
                                 name="date_end"
                                 readonly="state in ('cancelled', 'expired')"
                             />
+                            <field name="auto_renew" invisible="1" />
+                            <field
+                                name="notice_deadline"
+                                invisible="not auto_renew or not date_end"
+                            />
+                            <field
+                                name="do_not_renew"
+                                invisible="not auto_renew or not date_end"
+                                readonly="1"
+                            />
+                            <field name="paused_date" invisible="state != 'paused'" />
+                            <field name="resume_date" invisible="state != 'paused'" />
                             <field
                                 name="trial_end_date"
                                 invisible="not trial_end_date"
                             />
                             <field
                                 name="next_invoice_date"
+                                readonly="state in ('cancelled', 'expired')"
+                            />
+                            <field
+                                name="renewal_document"
                                 readonly="state in ('cancelled', 'expired')"
                             />
                         </group>
@@ -151,6 +199,23 @@
                         </page>
                         <page name="notes" string="Notes">
                             <field name="note" placeholder="Terms and conditions..." />
+                        </page>
+                        <page
+                            name="order_changes"
+                            string="Changes from Orders"
+                            groups="alfo_subscription_core.group_subscription_manager"
+                            invisible="not order_change_ids"
+                        >
+                            <field name="order_change_ids">
+                                <list create="0" delete="0" decoration-muted="reverted">
+                                    <field name="create_date" string="Date" />
+                                    <field name="order_name" />
+                                    <field name="change_type" />
+                                    <field name="product_id" />
+                                    <field name="quantity" />
+                                    <field name="reverted" />
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>

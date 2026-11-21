@@ -390,6 +390,31 @@ invoice date, product lines and lifecycle states (draft, trial,
 active, paused, cancelled and expired).</li>
 <li>A daily scheduled action that moves finished trials to active and
 finished contracts to expired.</li>
+<li>A <strong>PDF report of the subscription</strong> (Print menu), in the partner
+language: partner, plan, billing periodicity, status, dates, lines,
+total per period and terms and conditions.</li>
+<li>A <strong>PDF report of the plan</strong> (Print menu): billing, free trial,
+company, status, description, the open subscriptions using it and the
+total per period of the running ones, for customers and vendors.</li>
+<li>Both reports can be printed for several records at once from the list
+views (one page per record).</li>
+<li><strong>End Trial</strong> (subscription administrators only): ends the free trial
+today, the subscription becomes active and its next invoice comes
+forward. The chatter records who ended it and the planned end.</li>
+<li><strong>Confirmation wizard</strong> for the sale and purchase modules: when
+confirming an order from its form would change existing subscriptions
+(quantity added or product added), it shows what they already have
+and, in green, what the order adds, before confirming. <strong>Confirm and
+Add</strong> applies the changes; <strong>Confirm without Adding</strong> confirms the
+order without changing the existing subscriptions (those products are
+sold once, new subscriptions are still created, and the order chatter
+records it); <strong>Cancel</strong> leaves the order unconfirmed.</li>
+<li><strong>Cancelling an order reverts what it changed</strong> in the subscriptions
+(sale and purchase modules): the quantities it added are subtracted,
+the lines it added are removed and a subscription it created is
+cancelled when no line is left. Renewal documents already created are
+not touched. Every change from an order is logged (tab <em>Changes from
+Orders</em>, administrators) and the chatter explains what was reverted.</li>
 <li>Two security groups: <em>Subscriptions / User</em> and <em>Subscriptions /
 Administrator</em>.</li>
 </ul>

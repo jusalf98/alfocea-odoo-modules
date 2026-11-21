@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_subscription_contract_portal,subscription.contract portal,alfo_subscription_core.model_subscription_contract,base.group_portal,1,0,0,0
+access_subscription_contract_line_portal,subscription.contract.line portal,alfo_subscription_core.model_subscription_contract_line,base.group_portal,1,0,0,0
+access_subscription_plan_portal,subscription.plan portal,alfo_subscription_core.model_subscription_plan,base.group_portal,1,0,0,0

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="subscription_contract_view_form_inherit" model="ir.ui.view">
+        <field name="model">subscription.contract</field>
+        <field
+            name="inherit_id"
+            ref="alfo_subscription_core.subscription_contract_view_form"
+        />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="action_view_invoices"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-pencil-square-o"
+                    invisible="not invoice_count"
+                    groups="account.group_account_invoice"
+                >
+                    <field name="invoice_count" widget="statinfo" string="Invoices" />
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

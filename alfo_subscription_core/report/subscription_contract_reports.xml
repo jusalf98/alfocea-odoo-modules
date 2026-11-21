@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_report_subscription_contract" model="ir.actions.report">
+        <field name="name">Subscription</field>
+        <field name="model">subscription.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field
+            name="report_name"
+        >alfo_subscription_core.report_subscription_contract</field>
+        <field
+            name="report_file"
+        >alfo_subscription_core.report_subscription_contract</field>
+        <field
+            name="print_report_name"
+        >'Subscription - %s' % (object.name or '').replace('/', '_')</field>
+        <field name="binding_model_id" ref="model_subscription_contract" />
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

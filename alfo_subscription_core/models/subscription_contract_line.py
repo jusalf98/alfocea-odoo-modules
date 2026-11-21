@@ -66,6 +66,18 @@ class SubscriptionContractLine(models.Model):
         if self.filtered(lambda line: line.quantity <= 0):
             raise ValidationError(self.env._("The quantity must be greater than 0."))
 
+    def _get_renewal_price_unit(self, currency, date=None):
+        """Contract price converted to the currency of the renewal document."""
+        self.ensure_one()
+        if not currency or currency == self.currency_id:
+            return self.price_unit
+        return self.currency_id._convert(
+            self.price_unit,
+            currency,
+            self.company_id,
+            date or fields.Date.context_today(self),
+        )
+
     def _get_purchase_price_unit(self):
         """Vendor price of the product for the contract partner, else its cost."""
         self.ensure_one()

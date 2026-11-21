@@ -2,3 +2,12 @@ from . import test_subscription_plan
 from . import test_subscription_contract
 from . import test_subscription_contract_type
 from . import test_subscription_security
+from . import test_subscription_report
+from . import test_subscription_plan_report
+from . import test_subscription_end_trial
+from . import test_subscription_labels
+from . import test_subscription_pause
+from . import test_subscription_close
+from . import test_subscription_auto_renew
+from . import test_subscription_reminders
+from . import test_subscription_renewal_failure

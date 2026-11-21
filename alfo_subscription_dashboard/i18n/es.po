@@ -1,0 +1,117 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* alfo_subscription_dashboard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0-20261112\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-21 17:29+0000\n"
+"PO-Revision-Date: 2026-11-21 17:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. module: alfo_subscription_dashboard
+#: model:ir.model.fields,field_description:alfo_subscription_dashboard.field_subscription_contract__recurring_yearly
+msgid "ARR"
+msgstr "ARR"
+
+#. module: alfo_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_dashboard.subscription_contract_view_search_analysis
+msgid "Active (paying)"
+msgstr "Activas (de pago)"
+
+#. module: alfo_subscription_dashboard
+#: model:ir.model.fields,help:alfo_subscription_dashboard.field_subscription_contract__recurring_yearly
+msgid "Annual Recurring Revenue (or cost): MRR x 12."
+msgstr "Ingreso recurrente anual (o gasto): MRR x 12."
+
+#. module: alfo_subscription_dashboard
+#: model_terms:ir.actions.act_window,help:alfo_subscription_dashboard.subscription_churn_action
+msgid "Cancelled and expired customer subscriptions, by month and reason."
+msgstr "Suscripciones de clientes canceladas y vencidas, por mes y motivo."
+
+#. module: alfo_subscription_dashboard
+#: model:ir.actions.act_window,name:alfo_subscription_dashboard.subscription_churn_action
+#: model:ir.ui.menu,name:alfo_subscription_dashboard.subscription_churn_menu
+msgid "Churn"
+msgstr "Bajas"
+
+#. module: alfo_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_dashboard.subscription_contract_view_search_analysis
+msgid "Close Month"
+msgstr "Mes de baja"
+
+#. module: alfo_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_dashboard.subscription_contract_view_search_analysis
+msgid "Close Reason"
+msgstr "Motivo de baja"
+
+#. module: alfo_subscription_dashboard
+#: model:ir.model.fields,field_description:alfo_subscription_dashboard.field_subscription_contract__recurring_monthly
+msgid "MRR"
+msgstr "MRR"
+
+#. module: alfo_subscription_dashboard
+#: model:ir.model.fields,help:alfo_subscription_dashboard.field_subscription_contract__recurring_monthly
+msgid "Monthly Recurring Revenue (or cost, for vendor subscriptions): the total per period of the subscription, normalized to one month."
+msgstr "Ingreso recurrente mensual (o gasto, en las suscripciones de proveedores): el total por periodo de la suscripción llevado a un mes."
+
+#. module: alfo_subscription_dashboard
+#: model:ir.actions.act_window,name:alfo_subscription_dashboard.subscription_new_action
+#: model:ir.ui.menu,name:alfo_subscription_dashboard.subscription_new_menu
+msgid "New Subscriptions"
+msgstr "Altas de suscripciones"
+
+#. module: alfo_subscription_dashboard
+#: model_terms:ir.actions.act_window,help:alfo_subscription_dashboard.subscription_mrr_action
+msgid "No active subscriptions yet"
+msgstr "Todavía no hay suscripciones activas"
+
+#. module: alfo_subscription_dashboard
+#: model_terms:ir.actions.act_window,help:alfo_subscription_dashboard.subscription_churn_action
+msgid "No cancelled subscriptions"
+msgstr "No hay suscripciones canceladas"
+
+#. module: alfo_subscription_dashboard
+#: model:ir.actions.act_window,name:alfo_subscription_dashboard.subscription_vendor_cost_action
+#: model:ir.ui.menu,name:alfo_subscription_dashboard.subscription_vendor_cost_menu
+msgid "Recurring Costs"
+msgstr "Gastos recurrentes"
+
+#. module: alfo_subscription_dashboard
+#: model:ir.actions.act_window,name:alfo_subscription_dashboard.subscription_mrr_action
+#: model:ir.ui.menu,name:alfo_subscription_dashboard.subscription_mrr_menu
+msgid "Recurring Revenue (MRR)"
+msgstr "Ingresos recurrentes (MRR)"
+
+#. module: alfo_subscription_dashboard
+#: model:ir.ui.menu,name:alfo_subscription_dashboard.menu_subscription_reporting
+msgid "Reporting"
+msgstr "Informes"
+
+#. module: alfo_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_dashboard.subscription_contract_view_search_analysis
+msgid "Start Month"
+msgstr "Mes de inicio"
+
+#. module: alfo_subscription_dashboard
+#: model:ir.model,name:alfo_subscription_dashboard.model_subscription_contract
+msgid "Subscription Contract"
+msgstr "Contrato de suscripción"
+
+#. module: alfo_subscription_dashboard
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_dashboard.subscription_contract_view_graph
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_dashboard.subscription_contract_view_pivot
+msgid "Subscriptions Analysis"
+msgstr "Análisis de suscripciones"
+
+#. module: alfo_subscription_dashboard
+#: model_terms:ir.actions.act_window,help:alfo_subscription_dashboard.subscription_mrr_action
+msgid "The monthly recurring revenue of the active customer subscriptions."
+msgstr "El ingreso recurrente mensual de las suscripciones de clientes activas."

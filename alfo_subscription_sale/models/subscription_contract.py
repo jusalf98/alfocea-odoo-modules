@@ -1,19 +1,14 @@
-import logging
-
-from dateutil.relativedelta import relativedelta
-
 from odoo import Command, api, fields, models
-
-_logger = logging.getLogger(__name__)
-
-# A contract still in trial whose next invoice date has been reached has finished
-# its trial: the core cron that moves it to active may simply run later today.
-RENEWABLE_STATES = ("trial", "active")
+from odoo.exceptions import ValidationError
 
 
 class SubscriptionContract(models.Model):
     _inherit = "subscription.contract"
 
+    renewal_document = fields.Selection(
+        selection_add=[("sale_order", "Sale Order")],
+        ondelete={"sale_order": lambda recs: recs.write({"renewal_document": "none"})},
+    )
     sale_order_ids = fields.Many2many(
         "sale.order",
         relation="subscription_contract_sale_order_rel",
@@ -30,6 +25,22 @@ class SubscriptionContract(models.Model):
         for contract in self:
             contract.sale_order_count = len(contract.sale_order_ids)
 
+    @api.constrains("renewal_document", "contract_type")
+    def _check_renewal_document_sale_order(self):
+        if self.filtered(
+            lambda c: c.renewal_document == "sale_order" and c.contract_type != "sale"
+        ):
+            raise ValidationError(
+                self.env._(
+                    "Only customer subscriptions can be renewed with sale orders."
+                )
+            )
+
+    def _get_default_renewal_document(self):
+        if self.contract_type == "sale":
+            return "sale_order"
+        return super()._get_default_renewal_document()
+
     def action_view_sale_orders(self):
         self.ensure_one()
         action = self.env["ir.actions.act_window"]._for_xml_id("sale.action_orders")
@@ -45,55 +56,20 @@ class SubscriptionContract(models.Model):
     @api.model
     def _cron_create_recurring_sale_orders(self):
         """Create the sale orders of the customer subscriptions that are due."""
-        today = fields.Date.context_today(self)
-        for contract in self.search(self._get_renewal_domain(today)):
-            # One savepoint per contract: an error in one subscription (archived
-            # product, wrong configuration...) must not block the other renewals.
-            try:
-                with self.env.cr.savepoint():
-                    contract._create_recurring_sale_orders(today)
-            except Exception:
-                _logger.exception(
-                    "Subscription %s: the renewal sale order could not be created",
-                    contract.display_name,
-                )
-
-    @api.model
-    def _get_renewal_domain(self, date):
-        return [
-            ("contract_type", "=", "sale"),
-            ("state", "in", RENEWABLE_STATES),
-            ("next_invoice_date", "!=", False),
-            ("next_invoice_date", "<=", date),
-        ]
+        self._process_renewals("sale_order", "_create_recurring_sale_orders")
 
     def _create_recurring_sale_orders(self, date):
-        """Create one sale order per due period up to ``date``.
-
-        Missed periods (e.g. the server was down) are caught up, one order each.
-        No period starting after the end date of the contract is ordered. The next
-        invoice date is moved to the start of the first period not ordered yet.
-        """
+        """Create one sale order per due period up to ``date``."""
         self.ensure_one()
-        vals_list = []
-        period_start = self.next_invoice_date
-        while period_start <= date and (
-            not self.date_end or period_start <= self.date_end
-        ):
-            next_period_start = self.plan_id._get_next_date(period_start)
-            vals_list.append(
-                self._prepare_renewal_sale_order_vals(
-                    period_start, next_period_start - relativedelta(days=1)
-                )
-            )
-            period_start = next_period_start
-        if not vals_list:
+        periods, next_invoice_date = self._get_due_periods(date)
+        if not periods:
             return self.env["sale.order"]
-
-        orders = self.env["sale.order"].create(vals_list)
+        orders = self.env["sale.order"].create(
+            [self._prepare_renewal_sale_order_vals(*period) for period in periods]
+        )
         self.write(
             {
-                "next_invoice_date": period_start,
+                "next_invoice_date": next_invoice_date,
                 "sale_order_ids": [Command.link(order.id) for order in orders],
             }
         )
@@ -106,6 +82,7 @@ class SubscriptionContract(models.Model):
         company = self.company_id
         pricelist = self.partner_id.with_company(company).property_product_pricelist
         currency = pricelist.currency_id or company.currency_id
+        period = self._get_period_description(period_start, period_end)
         vals = {
             "partner_id": self.partner_id.id,
             "company_id": company.id,
@@ -113,9 +90,7 @@ class SubscriptionContract(models.Model):
             "origin": self.name,
             "order_line": [
                 Command.create(
-                    line._prepare_renewal_sale_order_line_vals(
-                        period_start, period_end, currency
-                    )
+                    line._prepare_renewal_sale_order_line_vals(period, currency)
                 )
                 for line in self.line_ids
             ],

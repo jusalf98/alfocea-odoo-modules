@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="subscription_close_wizard_view_form" model="ir.ui.view">
+        <field name="name">subscription.close.wizard.form</field>
+        <field name="model">subscription.close.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="contract_ids" invisible="1" />
+                <field name="close_action" invisible="1" />
+                <group>
+                    <field name="reason_id" options="{'no_create': True}" />
+                    <field name="resume_date" invisible="close_action != 'pause'" />
+                    <field name="note" placeholder="Details for the chatter..." />
+                </group>
+                <div class="text-muted" invisible="close_action != 'pause'">
+                    While paused, the subscription is not renewed. When it is resumed,
+                    its dates move forward as many days as it was paused.
+                </div>
+                <footer>
+                    <button
+                        name="action_apply"
+                        type="object"
+                        string="Cancel Subscription"
+                        class="btn-primary"
+                        invisible="close_action != 'cancel'"
+                        data-hotkey="q"
+                    />
+                    <button
+                        name="action_apply"
+                        type="object"
+                        string="Pause Subscription"
+                        class="btn-primary"
+                        invisible="close_action != 'pause'"
+                        data-hotkey="q"
+                    />
+                    <button special="cancel" string="Discard" data-hotkey="x" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

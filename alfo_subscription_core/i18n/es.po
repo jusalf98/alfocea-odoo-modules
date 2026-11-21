@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0-20261112\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 08:34+0000\n"
-"PO-Revision-Date: 2026-11-21 08:34+0000\n"
+"POT-Creation-Date: 2026-11-21 17:29+0000\n"
+"PO-Revision-Date: 2026-11-21 17:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -17,14 +17,199 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/wizard/subscription_close_wizard.py:0
+msgid "%(action)s. Reason: %(reason)s. %(note)s"
+msgstr "%(action)s. Motivo: %(reason)s. %(note)s"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "%(count)s days"
+msgstr "%(count)s días"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "%(product)s: -%(quantity)s"
+msgstr "%(product)s: -%(quantity)s"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "%s is not renewed automatically."
+msgstr "%s no se renueva automáticamente."
+
+#. module: alfo_subscription_core
+#: model:ir.actions.report,print_report_name:alfo_subscription_core.action_report_subscription_plan
+msgid "'Plan - %s' % (object.name or '').replace('/', '_')"
+msgstr "'Plan - %s' % (object.name or '').replace('/', '_')"
+
+#. module: alfo_subscription_core
+#: model:ir.actions.report,print_report_name:alfo_subscription_core.action_report_subscription_contract
+msgid "'Subscription - %s' % (object.name or '').replace('/', '_')"
+msgstr "'Suscripción - %s' % (object.name or '').replace('/', '_')"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "1 day"
+msgstr "1 día"
+
+#. module: alfo_subscription_core
+#: model:mail.template,body_html:alfo_subscription_core.mail_template_subscription_trial_reminder
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                <p>Hello <t t-out=\"object.partner_id.name or ''\"/>,</p>\n"
+"                <p>\n"
+"                    The free trial of your subscription\n"
+"                    <strong t-out=\"object.name or ''\"/> ends on\n"
+"                    <strong t-out=\"format_date(object.trial_end_date)\"/>.\n"
+"                    From then on, it will be billed\n"
+"                    <t t-out=\"object.plan_id.billing_label or ''\"/>:\n"
+"                    <strong t-out=\"format_amount(object.amount_total, object.currency_id)\"/>.\n"
+"                </p>\n"
+"                <p>If you have any questions, just reply to this email.</p>\n"
+"            </div>\n"
+"        "
+msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                <p>Hola <t t-out=\"object.partner_id.name or ''\"/>,</p>\n"
+"                <p>\n"
+"                    La prueba gratuita de su suscripción\n"
+"                    <strong t-out=\"object.name or ''\"/> termina el\n"
+"                    <strong t-out=\"format_date(object.trial_end_date)\"/>.\n"
+"                    A partir de entonces se facturará\n"
+"                    <t t-out=\"object.plan_id.billing_label or ''\"/>:\n"
+"                    <strong t-out=\"format_amount(object.amount_total, object.currency_id)\"/>.\n"
+"                </p>\n"
+"                <p>Si tiene alguna pregunta, responda a este correo.</p>\n"
+"            </div>\n"
+"        "
+
+#. module: alfo_subscription_core
+#: model:mail.template,body_html:alfo_subscription_core.mail_template_subscription_renewal_reminder
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                <p>Hello <t t-out=\"object.partner_id.name or ''\"/>,</p>\n"
+"                <p>\n"
+"                    Your subscription <strong t-out=\"object.name or ''\"/>\n"
+"                    (<t t-out=\"object.plan_id.name or ''\"/>) will be renewed on\n"
+"                    <strong t-out=\"format_date(object.next_invoice_date)\"/>\n"
+"                    for <strong t-out=\"format_amount(object.amount_total, object.currency_id)\"/>.\n"
+"                </p>\n"
+"                <p>If you have any questions, just reply to this email.</p>\n"
+"            </div>\n"
+"        "
+msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                <p>Hola <t t-out=\"object.partner_id.name or ''\"/>,</p>\n"
+"                <p>\n"
+"                    Su suscripción <strong t-out=\"object.name or ''\"/>\n"
+"                    (<t t-out=\"object.plan_id.name or ''\"/>) se renovará el\n"
+"                    <strong t-out=\"format_date(object.next_invoice_date)\"/>\n"
+"                    por <strong t-out=\"format_amount(object.amount_total, object.currency_id)\"/>.\n"
+"                </p>\n"
+"                <p>Si tiene alguna pregunta, responda a este correo.</p>\n"
+"            </div>\n"
+"        "
+
+#. module: alfo_subscription_core
+#: model:mail.template,body_html:alfo_subscription_core.mail_template_subscription_expiry_reminder
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                <p>Hello <t t-out=\"object.partner_id.name or ''\"/>,</p>\n"
+"                <p>\n"
+"                    Your subscription <strong t-out=\"object.name or ''\"/>\n"
+"                    ends on <strong t-out=\"format_date(object.date_end)\"/>.\n"
+"                </p>\n"
+"                <p>If you want to keep it, just reply to this email.</p>\n"
+"            </div>\n"
+"        "
+msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                <p>Hola <t t-out=\"object.partner_id.name or ''\"/>,</p>\n"
+"                <p>\n"
+"                    Su suscripción <strong t-out=\"object.name or ''\"/>\n"
+"                    termina el <strong t-out=\"format_date(object.date_end)\"/>.\n"
+"                </p>\n"
+"                <p>Si quiere mantenerla, responda a este correo.</p>\n"
+"            </div>\n"
+"        "
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "<strong>Billing</strong>"
+msgstr "<strong>Facturación</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "<strong>Company</strong>"
+msgstr "<strong>Compañía</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "<strong>Description</strong>"
+msgstr "<strong>Descripción</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "<strong>End Date</strong>"
+msgstr "<strong>Fecha de fin</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "<strong>Free Trial Until</strong>"
+msgstr "<strong>Prueba gratuita hasta</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "<strong>Free Trial</strong>"
+msgstr "<strong>Prueba gratuita</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "<strong>Next Invoice Date</strong>"
+msgstr "<strong>Próxima factura</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "<strong>Plan</strong>"
+msgstr "<strong>Plan</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "<strong>Start Date</strong>"
+msgstr "<strong>Fecha de inicio</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "<strong>Status</strong>"
+msgstr "<strong>Estado</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "<strong>Terms and Conditions</strong>"
+msgstr "<strong>Términos y condiciones</strong>"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "<strong>Total per period</strong>"
+msgstr "<strong>Total por periodo</strong>"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__message_needaction
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__message_needaction
 msgid "Action Needed"
 msgstr "Acción requerida"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_reason__active
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__active
 #: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_contract__state__active
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
 msgid "Active"
 msgstr "Activo"
 
@@ -59,20 +244,41 @@ msgid "Add at least one line before starting: %s"
 msgstr "Añada al menos una línea antes de iniciar: %s"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__added_quantity
+msgid "Added"
+msgstr "Se añade"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_order_confirm_line__change__new_line
+msgid "Added to the subscription"
+msgstr "Se añade a la suscripción"
+
+#. module: alfo_subscription_core
 #: model:res.groups,name:alfo_subscription_core.group_subscription_manager
 msgid "Administrator"
 msgstr "Administrador"
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "All companies"
+msgstr "Todas las compañías"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_order_confirm_line__change__current
+msgid "Already in the subscription"
+msgstr "Ya en la suscripción"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "Amount"
+msgstr "Importe"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_plan_view_form
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_plan_view_search
 msgid "Archived"
 msgstr "Archivado"
-
-#. module: alfo_subscription_core
-#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
-msgid "Are you sure you want to cancel this subscription?"
-msgstr "¿Está seguro de que desea cancelar esta suscripción?"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__message_attachment_count
@@ -81,9 +287,28 @@ msgid "Attachment Count"
 msgstr "Número de adjuntos"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__billing_label
+msgid "Billing"
+msgstr "Facturación"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_close_wizard__close_action__cancel
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_order_confirm_view_form
 msgid "Cancel"
 msgstr "Cancelar"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_close_wizard_view_form
+msgid "Cancel Subscription"
+msgstr "Cancelar suscripción"
+
+#. module: alfo_subscription_core
+#: model:ir.model,name:alfo_subscription_core.model_subscription_close_wizard
+msgid "Cancel or Pause Subscriptions"
+msgstr "Cancelar o pausar suscripciones"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_contract__state__cancelled
@@ -96,11 +321,68 @@ msgid "Cancelled or Expired"
 msgstr "Cancelado o vencido"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__change
+msgid "Change"
+msgstr "Cambio"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_change_plan_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
+msgid "Change Plan"
+msgstr "Cambiar de plan"
+
+#. module: alfo_subscription_core
+#: model:ir.model,name:alfo_subscription_core.model_subscription_change_plan_wizard
+msgid "Change Subscription Plan"
+msgstr "Cambiar el plan de la suscripción"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__change_type
+msgid "Change Type"
+msgstr "Tipo de cambio"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__order_change_ids
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
+msgid "Changes from Orders"
+msgstr "Cambios desde pedidos"
+
+#. module: alfo_subscription_core
 #: model_terms:ir.actions.act_window,help:alfo_subscription_core.subscription_contract_sale_action
 msgid "Choose a customer and a plan, add the products and start it."
 msgstr "Elija un cliente y un plan, añada los productos e iníciela."
 
 #. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/wizard/subscription_change_plan_wizard.py:0
+msgid "Choose a plan different from the current one."
+msgstr "Elija un plan distinto del actual."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__close_action
+msgid "Close Action"
+msgstr "Acción"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__close_reason_id
+msgid "Close Reason"
+msgstr "Motivo de baja"
+
+#. module: alfo_subscription_core
+#: model:ir.actions.act_window,name:alfo_subscription_core.subscription_close_reason_action
+#: model:ir.ui.menu,name:alfo_subscription_core.subscription_close_reason_menu
+msgid "Close Reasons"
+msgstr "Motivos de baja"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__date_closed
+msgid "Closed On"
+msgstr "Fecha de baja"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__company_id
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__company_id
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__company_id
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__company_id
@@ -113,7 +395,40 @@ msgid "Configuration"
 msgstr "Configuración"
 
 #. module: alfo_subscription_core
+#: model:ir.model,name:alfo_subscription_core.model_subscription_order_confirm
+msgid "Confirm Order Subscription Changes"
+msgstr "Confirmar cambios de suscripción del pedido"
+
+#. module: alfo_subscription_core
+#: model:ir.model,name:alfo_subscription_core.model_subscription_order_confirm_line
+msgid "Confirm Order Subscription Changes Line"
+msgstr "Línea de confirmación de cambios de suscripción"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_order_confirm_view_form
+msgid "Confirm and Add"
+msgstr "Confirmar y añadir"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_order_confirm_view_form
+msgid "Confirm the order without changing the existing subscriptions: those products are sold once. New subscriptions are still created."
+msgstr "Confirma el pedido sin modificar las suscripciones existentes: esos productos se venden una sola vez. Las suscripciones nuevas sí se crean."
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_order_confirm_view_form
+msgid "Confirm without Adding"
+msgstr "Confirmar sin añadir"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/wizard/subscription_order_confirm.py:0
+msgid "Confirmed without adding products to the existing subscriptions %(subscriptions)s."
+msgstr "Confirmado sin añadir productos a las suscripciones existentes %(subscriptions)s."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__contract_id
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__contract_id
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__contract_id
 msgid "Contract"
 msgstr "Contrato"
 
@@ -121,6 +436,11 @@ msgstr "Contrato"
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__contract_count
 msgid "Contract Count"
 msgstr "Número de contratos"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__contract_line_id
+msgid "Contract Line"
+msgstr "Línea del contrato"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__contract_type
@@ -146,15 +466,27 @@ msgid "Create your first subscription plan"
 msgstr "Cree su primer plan de suscripción"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__create_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_reason__create_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__create_uid
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__create_uid
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__create_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__create_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__create_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__create_uid
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__create_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_reason__create_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__create_date
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__create_date
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__create_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__create_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__create_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__create_date
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__create_date
 msgid "Created on"
 msgstr "Creado el"
@@ -171,6 +503,11 @@ msgid "Customer"
 msgstr "Cliente"
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "Customer Subscription"
+msgstr "Suscripción de cliente"
+
+#. module: alfo_subscription_core
 #: model:ir.actions.act_window,name:alfo_subscription_core.subscription_contract_sale_action
 #: model:ir.ui.menu,name:alfo_subscription_core.subscription_contract_sale_menu
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_search
@@ -178,22 +515,73 @@ msgid "Customer Subscriptions"
 msgstr "Suscripciones de clientes"
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "Customer subscriptions in progress"
+msgstr "Suscripciones de clientes en curso"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
+msgid "Date"
+msgstr "Fecha"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_plan__periodicity__daily
 msgid "Day(s)"
 msgstr "Día(s)"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_plan__reminder_days
+msgid "Days before a renewal, the end of the trial or the end of the subscription to send a reminder email to the customer. 0 disables them."
+msgstr "Días antes de una renovación, del fin de la prueba o del fin de la suscripción para enviar un correo de aviso al cliente. Con 0 no se envían."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_plan__notice_days
+msgid "Days before the end date until which the customer can ask not to renew an automatically renewed subscription."
+msgstr "Días antes de la fecha de fin hasta los que el cliente puede pedir que no se renueve una suscripción de renovación automática."
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__name
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__name
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__description
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
 msgid "Description"
 msgstr "Descripción"
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_change_plan_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_close_wizard_view_form
+msgid "Details for the chatter..."
+msgstr "Detalles para el chatter..."
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_change_plan_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_close_wizard_view_form
+msgid "Discard"
+msgstr "Descartar"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__display_name
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_reason__display_name
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__display_name
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__display_name
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__display_name
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__display_name
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__display_name
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__display_name
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__do_not_renew
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
+msgid "Do Not Renew"
+msgstr "No renovar"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_contract__renewal_document
+msgid "Document created automatically on each period of the subscription."
+msgstr "Documento que se crea automáticamente en cada periodo de la suscripción."
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_contract__state__draft
@@ -207,14 +595,29 @@ msgid "End Date"
 msgstr "Fecha de fin"
 
 #. module: alfo_subscription_core
-#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_plan_view_kanban
-msgid "Every"
-msgstr "Cada"
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
+msgid "End Trial"
+msgstr "Terminar prueba"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
+msgid "End the free trial today? The subscription becomes active and the first invoice is brought forward."
+msgstr "¿Terminar hoy la prueba gratuita? La suscripción pasa a activa y la primera factura se adelanta."
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_contract__state__expired
 msgid "Expired"
 msgstr "Vencido"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__expiry_reminder_sent
+msgid "Expiry Reminder Sent"
+msgstr "Aviso de vencimiento enviado"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__total_quantity
+msgid "Final Quantity"
+msgstr "Cantidad final"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__message_follower_ids
@@ -235,6 +638,22 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr "Icono de Font Awesome, por ejemplo, fa-tasks"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__trial_label
+msgid "Free Trial"
+msgstr "Prueba gratuita"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "Free trial ended early by %(user)s on %(today)s (planned end: %(planned)s)."
+msgstr "Prueba gratuita terminada antes de tiempo por %(user)s el %(today)s (fin previsto: %(planned)s)."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_contract__user_id
+msgid "Gets the activities of the subscription, e.g. when a renewal fails."
+msgstr "Recibe las actividades de la suscripción, por ejemplo cuando falla una renovación."
+
+#. module: alfo_subscription_core
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_search
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_plan_view_search
 msgid "Group By"
@@ -247,8 +666,14 @@ msgid "Has Message"
 msgstr "Tiene un mensaje"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__id
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_reason__id
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__id
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__id
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__id
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__id
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__id
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__id
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__id
 msgid "ID"
 msgstr "ID"
@@ -278,6 +703,16 @@ msgid "If checked, some messages have a delivery error."
 msgstr "Si está marcado, algunos mensajes tienen un error de entrega."
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__current_quantity
+msgid "In Subscription"
+msgstr "En la suscripción"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_order_confirm_view_form
+msgid "In green, what the order adds to them."
+msgstr "En verde, lo que el pedido les añade."
+
+#. module: alfo_subscription_core
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_plan_view_form
 msgid "Internal description of the plan..."
 msgstr "Descripción interna del plan..."
@@ -289,21 +724,44 @@ msgid "Is Follower"
 msgstr "Es seguidor"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__write_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_reason__write_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__write_uid
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__write_uid
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__write_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__write_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__write_uid
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__write_uid
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__write_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_reason__write_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__write_date
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__write_date
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__write_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__write_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__write_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__write_date
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_contract__notice_deadline
+msgid "Last day to ask not to renew the subscription."
+msgstr "Último día para pedir que no se renueve la suscripción."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_contract_order_change__change_type__new_line
+msgid "Line added"
+msgstr "Línea añadida"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__line_ids
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__line_ids
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
 msgid "Lines"
 msgstr "Líneas"
@@ -332,9 +790,22 @@ msgid "My Activity Deadline"
 msgstr "Fecha límite de mi actividad"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_reason__name
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__name
 msgid "Name"
 msgstr "Nombre"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__plan_id
+msgid "New Plan"
+msgstr "Nuevo plan"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/wizard/subscription_order_confirm.py:0
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_order_confirm_line__change__new_subscription
+msgid "New subscription"
+msgstr "Suscripción nueva"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__activity_date_deadline
@@ -355,11 +826,38 @@ msgid "Next Activity Type"
 msgstr "Tipo de la siguiente actividad"
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "Next Invoice"
+msgstr "Próxima factura"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__next_invoice_date
 msgid "Next Invoice Date"
 msgstr "Fecha de la próxima factura"
 
 #. module: alfo_subscription_core
+#: model:subscription.close.reason,name:alfo_subscription_core.close_reason_not_needed
+msgid "No longer needed"
+msgstr "Ya no lo necesita"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "No open subscription uses this plan."
+msgstr "Ninguna suscripción abierta usa este plan."
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "No trial"
+msgstr "Sin prueba"
+
+#. module: alfo_subscription_core
+#: model:subscription.close.reason,name:alfo_subscription_core.close_reason_dissatisfied
+msgid "Not satisfied with the service"
+msgstr "No está satisfecho con el servicio"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__note
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__note
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__note
 msgid "Note"
 msgstr "Nota"
@@ -368,6 +866,21 @@ msgstr "Nota"
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
 msgid "Notes"
 msgstr "Notas"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_contract__renewal_document__none
+msgid "Nothing"
+msgstr "Nada"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__notice_days
+msgid "Notice Days"
+msgstr "Días de preaviso"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__notice_deadline
+msgid "Notice Deadline"
+msgstr "Fin del preaviso"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__message_needaction_counter
@@ -399,15 +912,78 @@ msgid "Number of messages with delivery error"
 msgstr "Número de mensajes con error de entrega"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__group_by_partner
+msgid "One Subscription per Partner"
+msgstr "Una suscripción por contacto"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "Only subscription administrators can end a free trial."
+msgstr "Solo los administradores de suscripciones pueden terminar una prueba gratuita."
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "Open Subscriptions"
+msgstr "Suscripciones abiertas"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_close_wizard__resume_date
+msgid "Optional: the subscription is resumed automatically on this date."
+msgstr "Opcional: la suscripción se reanuda automáticamente en esta fecha."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__order_name
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__res_id
+msgid "Order"
+msgstr "Pedido"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "Order %(order)s was cancelled, its changes were reverted: %(changes)s."
+msgstr "El pedido %(order)s se ha cancelado y se han deshecho sus cambios: %(changes)s."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__res_id
+msgid "Order ID"
+msgstr "ID del pedido"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__res_model
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__res_model
+msgid "Order Model"
+msgstr "Modelo del pedido"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm__order_name
+msgid "Order Name"
+msgstr "Pedido"
+
+#. module: alfo_subscription_core
+#: model:subscription.close.reason,name:alfo_subscription_core.close_reason_other
+msgid "Other"
+msgstr "Otro"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__partner_id
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_search
 msgid "Partner"
 msgstr "Contacto"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_close_wizard__close_action__pause
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
 msgid "Pause"
 msgstr "Pausar"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_close_wizard_view_form
+msgid "Pause Subscription"
+msgstr "Pausar suscripción"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_contract__state__paused
@@ -416,16 +992,35 @@ msgid "Paused"
 msgstr "Pausado"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__paused_date
+msgid "Paused On"
+msgstr "Pausada el"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "Period: %(start)s - %(end)s"
+msgstr "Periodo: %(start)s - %(end)s"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__periodicity
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_plan_view_search
 msgid "Periodicity"
 msgstr "Periodicidad"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_change_plan_wizard__current_plan_id
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__plan_id
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__plan_name
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_search
 msgid "Plan"
 msgstr "Plan"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/wizard/subscription_change_plan_wizard.py:0
+msgid "Plan changed from %(old)s (%(old_billing)s) to %(new)s (%(new_billing)s). %(note)s"
+msgstr "Plan cambiado de %(old)s (%(old_billing)s) a %(new)s (%(new_billing)s). %(note)s"
 
 #. module: alfo_subscription_core
 #: model:ir.actions.act_window,name:alfo_subscription_core.subscription_plan_action
@@ -441,6 +1036,8 @@ msgstr "Los planes definen cada cuánto se factura una suscripción y su periodo
 #. module: alfo_subscription_core
 #: model:ir.model,name:alfo_subscription_core.model_product_template
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__product_id
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__product_id
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__product_id
 msgid "Product"
 msgstr "Producto"
 
@@ -451,11 +1048,25 @@ msgstr "Compra"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__quantity
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__quantity
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
 msgid "Quantity"
 msgstr "Cantidad"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_contract_order_change__change_type__quantity
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_order_confirm_line__change__quantity
+msgid "Quantity added"
+msgstr "Cantidad añadida"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__reason_id
+msgid "Reason"
+msgstr "Motivo"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__name
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
 msgid "Reference"
 msgstr "Referencia"
 
@@ -463,6 +1074,38 @@ msgstr "Referencia"
 #: model_terms:ir.actions.act_window,help:alfo_subscription_core.subscription_contract_purchase_action
 msgid "Register your first vendor subscription"
 msgstr "Registre su primera suscripción de proveedor"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__reminder_days
+msgid "Reminder Days"
+msgstr "Días de aviso"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
+msgid "Renew Again"
+msgstr "Volver a renovar"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__auto_renew
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__auto_renew
+msgid "Renew Automatically"
+msgstr "Renovar automáticamente"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__renewal_document
+msgid "Renewal Document"
+msgstr "Documento de renovación"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__renewal_reminder_date
+msgid "Renewal Reminder Date"
+msgstr "Fecha del aviso de renovación"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "Renewed automatically: the end date moves from %(old)s to %(new)s."
+msgstr "Renovada automáticamente: la fecha de fin pasa del %(old)s al %(new)s."
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__interval
@@ -473,6 +1116,11 @@ msgstr "Repetir cada"
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
 msgid "Reset to Draft"
 msgstr "Restablecer a borrador"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__user_id
+msgid "Responsible"
+msgstr "Responsable"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__activity_user_id
@@ -486,6 +1134,23 @@ msgid "Resume"
 msgstr "Reanudar"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__resume_date
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__resume_date
+msgid "Resume Date"
+msgstr "Fecha de reanudación"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "Resumed after %(days)s days paused: its dates moved forward as many days."
+msgstr "Reanudada tras %(days)s días en pausa: sus fechas se desplazan los mismos días."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_order_change__reverted
+msgid "Reverted"
+msgstr "Deshecho"
+
+#. module: alfo_subscription_core
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_search
 msgid "Running"
 msgstr "En curso"
@@ -496,6 +1161,7 @@ msgid "Sale"
 msgstr "Venta"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_reason__sequence
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__sequence
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_plan__sequence
 msgid "Sequence"
@@ -517,6 +1183,7 @@ msgid "State"
 msgstr "Estado"
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_search
 msgid "Status"
 msgstr "Estado"
@@ -536,6 +1203,22 @@ msgstr ""
 "Planificada: actividades futuras."
 
 #. module: alfo_subscription_core
+#: model:ir.actions.report,name:alfo_subscription_core.action_report_subscription_contract
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__contract_name
+msgid "Subscription"
+msgstr "Suscripción"
+
+#. module: alfo_subscription_core
+#: model:ir.model,name:alfo_subscription_core.model_subscription_contract_order_change
+msgid "Subscription Change from an Order"
+msgstr "Cambio de suscripción desde un pedido"
+
+#. module: alfo_subscription_core
+#: model:ir.model,name:alfo_subscription_core.model_subscription_close_reason
+msgid "Subscription Close Reason"
+msgstr "Motivo de baja de suscripción"
+
+#. module: alfo_subscription_core
 #: model:ir.model,name:alfo_subscription_core.model_subscription_contract
 msgid "Subscription Contract"
 msgstr "Contrato de suscripción"
@@ -546,18 +1229,52 @@ msgid "Subscription Contract Line"
 msgstr "Línea de contrato de suscripción"
 
 #. module: alfo_subscription_core
+#: model:ir.actions.report,name:alfo_subscription_core.action_report_subscription_plan
 #: model:ir.model,name:alfo_subscription_core.model_subscription_plan
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_product_product__default_plan_id
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_product_template__default_plan_id
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
 msgid "Subscription Plan"
 msgstr "Plan de suscripción"
 
 #. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/wizard/subscription_order_confirm.py:0
+msgid "Subscription changes"
+msgstr "Cambios en las suscripciones"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_contract_order_change__change_type__new_subscription
+msgid "Subscription created"
+msgstr "Suscripción creada"
+
+#. module: alfo_subscription_core
+#: model:mail.template,name:alfo_subscription_core.mail_template_subscription_trial_reminder
+msgid "Subscription: end of the free trial"
+msgstr "Suscripción: fin de la prueba gratuita"
+
+#. module: alfo_subscription_core
+#: model:mail.template,name:alfo_subscription_core.mail_template_subscription_expiry_reminder
+msgid "Subscription: end of the subscription"
+msgstr "Suscripción: fin de la suscripción"
+
+#. module: alfo_subscription_core
+#: model:mail.template,name:alfo_subscription_core.mail_template_subscription_renewal_reminder
+msgid "Subscription: renewal reminder"
+msgstr "Suscripción: aviso de renovación"
+
+#. module: alfo_subscription_core
 #: model:ir.actions.act_window,name:alfo_subscription_core.subscription_contract_action
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_close_wizard__contract_ids
 #: model:ir.module.category,name:alfo_subscription_core.module_category_subscription
 #: model:ir.ui.menu,name:alfo_subscription_core.menu_subscription_root
 msgid "Subscriptions"
 msgstr "Suscripciones"
+
+#. module: alfo_subscription_core
+#: model:ir.actions.server,name:alfo_subscription_core.ir_cron_subscription_send_reminders_ir_actions_server
+msgid "Subscriptions: send reminder emails"
+msgstr "Suscripciones: enviar correos de aviso"
 
 #. module: alfo_subscription_core
 #: model:ir.actions.server,name:alfo_subscription_core.ir_cron_subscription_update_states_ir_actions_server
@@ -570,9 +1287,36 @@ msgid "Subtotal"
 msgstr "Subtotal"
 
 #. module: alfo_subscription_core
+#: model:subscription.close.reason,name:alfo_subscription_core.close_reason_competitor
+msgid "Switched to a competitor"
+msgstr "Se ha ido a la competencia"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "Tax ID:"
+msgstr "NIF:"
+
+#. module: alfo_subscription_core
+#: model:subscription.close.reason,name:alfo_subscription_core.close_reason_temporary
+msgid "Temporary break"
+msgstr "Pausa temporal"
+
+#. module: alfo_subscription_core
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_form
 msgid "Terms and conditions..."
 msgstr "Términos y condiciones..."
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_change_plan_wizard_view_form
+msgid ""
+"The current period is kept: the next invoice date does not change\n"
+"                    and the following renewals use the new plan."
+msgstr "Se mantiene el periodo actual: la fecha de la próxima factura no cambia y las siguientes renovaciones usan el nuevo plan."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_contract__do_not_renew
+msgid "The customer asked not to renew the subscription: it expires at its end date."
+msgstr "El cliente ha pedido que no se renueve la suscripción: vence en su fecha de fin."
 
 #. module: alfo_subscription_core
 #. odoo-python
@@ -588,9 +1332,44 @@ msgstr "El intervalo debe ser mayor que 0."
 
 #. module: alfo_subscription_core
 #. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "The notice period of %(subscription)s ended on %(deadline)s: it will be renewed on %(end)s."
+msgstr "El preaviso de %(subscription)s terminó el %(deadline)s: se renovará el %(end)s."
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/wizard/subscription_change_plan_wizard.py:0
+msgid "The plan of a closed subscription cannot be changed."
+msgstr "No se puede cambiar el plan de una suscripción cerrada."
+
+#. module: alfo_subscription_core
+#. odoo-python
 #: code:addons/alfo_subscription_core/models/subscription_contract_line.py:0
 msgid "The quantity must be greater than 0."
 msgstr "La cantidad debe ser mayor que 0."
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "The reminder and notice days cannot be negative."
+msgstr "Los días de aviso y de preaviso no pueden ser negativos."
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "The renewal failed"
+msgstr "La renovación ha fallado"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "The renewal of %(subscription)s could not be created: %(error)s"
+msgstr "No se ha podido crear la renovación de %(subscription)s: %(error)s"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_contract__resume_date
+msgid "The subscription is resumed automatically on this date."
+msgstr "La suscripción se reanuda automáticamente en esta fecha."
 
 #. module: alfo_subscription_core
 #. odoo-python
@@ -605,15 +1384,35 @@ msgid "This action is not allowed for the subscriptions: %s"
 msgstr "Esta acción no está permitida para las suscripciones: %s"
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_order_confirm_view_form
+msgid "This order will change existing subscriptions."
+msgstr "Este pedido va a modificar suscripciones existentes."
+
+#. module: alfo_subscription_core
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_search
 msgid "To Invoice"
 msgstr "A facturar"
+
+#. module: alfo_subscription_core
+#: model:subscription.close.reason,name:alfo_subscription_core.close_reason_too_expensive
+msgid "Too expensive"
+msgstr "Demasiado caro"
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__amount_total
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_list
 msgid "Total"
 msgstr "Total"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "Total per period"
+msgstr "Total por periodo"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "Total per period of the subscriptions in trial or active."
+msgstr "Total por periodo de las suscripciones en prueba o activas."
 
 #. module: alfo_subscription_core
 #: model_terms:ir.actions.act_window,help:alfo_subscription_core.subscription_contract_purchase_action
@@ -636,6 +1435,16 @@ msgid "Trial End Date"
 msgstr "Fecha de fin de la prueba"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract__trial_reminder_sent
+msgid "Trial Reminder Sent"
+msgstr "Aviso de fin de prueba enviado"
+
+#. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "Type"
+msgstr "Tipo"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields,help:alfo_subscription_core.field_subscription_contract__activity_exception_decoration
 #: model:ir.model.fields,help:alfo_subscription_core.field_subscription_plan__activity_exception_decoration
 msgid "Type of the exception activity on record."
@@ -643,6 +1452,7 @@ msgstr "Tipo de la actividad de excepción en el registro."
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_contract_line__price_unit
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
 msgid "Unit Price"
 msgstr "Precio unitario"
 
@@ -657,6 +1467,11 @@ msgid "Vendor"
 msgstr "Proveedor"
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_contract_document
+msgid "Vendor Subscription"
+msgstr "Suscripción de proveedor"
+
+#. module: alfo_subscription_core
 #: model:ir.actions.act_window,name:alfo_subscription_core.subscription_contract_purchase_action
 #: model:ir.ui.menu,name:alfo_subscription_core.subscription_contract_purchase_menu
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_contract_view_search
@@ -664,9 +1479,25 @@ msgid "Vendor Subscriptions"
 msgstr "Suscripciones de proveedores"
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.report_subscription_plan_document
+msgid "Vendor subscriptions in progress"
+msgstr "Suscripciones de proveedores en curso"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_plan__periodicity__weekly
 msgid "Week(s)"
 msgstr "Semana(s)"
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_contract__auto_renew
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_plan__auto_renew
+msgid "When a subscription with an end date reaches it, extend it one more period instead of expiring it, unless the customer asked not to renew it before the notice period."
+msgstr "Cuando una suscripción con fecha de fin llega a ella, se amplía un periodo más en lugar de vencer, salvo que el cliente pidiera no renovarla dentro del preaviso."
+
+#. module: alfo_subscription_core
+#: model:ir.model.fields,help:alfo_subscription_core.field_subscription_plan__group_by_partner
+msgid "When an order sells (or buys) a product of this plan that the partner does not have yet, add it as a new line to the open subscription of the partner with this plan. If unchecked, a new subscription is created."
+msgstr "Cuando un pedido vende (o compra) un producto de este plan que el contacto todavía no tiene, se añade como una línea nueva a la suscripción abierta del contacto con este plan. Si no se marca, se crea una suscripción nueva."
 
 #. module: alfo_subscription_core
 #: model:ir.model.fields,help:alfo_subscription_core.field_product_product__default_plan_id
@@ -675,14 +1506,41 @@ msgid "When this product is sold, a subscription contract with this plan is crea
 msgstr "Al vender este producto, se crea e inicia automáticamente para el cliente un contrato de suscripción con este plan."
 
 #. module: alfo_subscription_core
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_close_wizard_view_form
+msgid ""
+"While paused, the subscription is not renewed. When it is resumed,\n"
+"                    its dates move forward as many days as it was paused."
+msgstr "Mientras está en pausa, la suscripción no se renueva. Al reanudarla, sus fechas se desplazan los mismos días que estuvo en pausa."
+
+#. module: alfo_subscription_core
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_plan_view_search
 msgid "With Trial"
 msgstr "Con prueba"
 
 #. module: alfo_subscription_core
+#: model:ir.model.fields,field_description:alfo_subscription_core.field_subscription_order_confirm_line__wizard_id
+msgid "Wizard"
+msgstr "Asistente"
+
+#. module: alfo_subscription_core
 #: model:ir.model.fields.selection,name:alfo_subscription_core.selection__subscription_plan__periodicity__yearly
 msgid "Year(s)"
 msgstr "Año(s)"
+
+#. module: alfo_subscription_core
+#: model:mail.template,subject:alfo_subscription_core.mail_template_subscription_trial_reminder
+msgid "Your free trial of {{ object.name }} ends soon"
+msgstr "Su prueba gratuita de {{ object.name }} termina pronto"
+
+#. module: alfo_subscription_core
+#: model:mail.template,subject:alfo_subscription_core.mail_template_subscription_expiry_reminder
+msgid "Your subscription {{ object.name }} ends soon"
+msgstr "Su suscripción {{ object.name }} termina pronto"
+
+#. module: alfo_subscription_core
+#: model:mail.template,subject:alfo_subscription_core.mail_template_subscription_renewal_reminder
+msgid "Your subscription {{ object.name }} will be renewed soon"
+msgstr "Su suscripción {{ object.name }} se renovará pronto"
 
 #. module: alfo_subscription_core
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_plan_view_kanban
@@ -695,6 +1553,55 @@ msgid "e.g. Monthly Plan"
 msgstr "p. ej., Plan mensual"
 
 #. module: alfo_subscription_core
-#: model_terms:ir.ui.view,arch_db:alfo_subscription_core.subscription_plan_view_kanban
-msgid "trial days"
-msgstr "días de prueba"
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "every %(count)s days"
+msgstr "cada %(count)s días"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "every %(count)s months"
+msgstr "cada %(count)s meses"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "every %(count)s weeks"
+msgstr "cada %(count)s semanas"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "every %(count)s years"
+msgstr "cada %(count)s años"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "every day"
+msgstr "cada día"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "every month"
+msgstr "cada mes"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "every week"
+msgstr "cada semana"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_plan.py:0
+msgid "every year"
+msgstr "cada año"
+
+#. module: alfo_subscription_core
+#. odoo-python
+#: code:addons/alfo_subscription_core/models/subscription_contract.py:0
+msgid "subscription cancelled"
+msgstr "suscripción cancelada"

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_subscription_plan_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2 class="mt-4">
+                    Subscription Plan <span t-field="doc.name" />
+                </h2>
+
+                <!-- At most 4 columns per row: wkhtmltopdf does not wrap them -->
+                <div class="row mt-4 mb-4" id="informations">
+                    <div class="col-3 mb-2" name="billing">
+                        <strong>Billing</strong>
+                        <div t-out="(doc.billing_label or '').capitalize()" />
+                    </div>
+                    <div class="col-3 mb-2" name="trial">
+                        <strong>Free Trial</strong>
+                        <div t-if="doc.trial_days" t-out="doc.trial_label" />
+                        <div t-else="">No trial</div>
+                    </div>
+                    <div class="col-3 mb-2" name="company">
+                        <strong>Company</strong>
+                        <div t-if="doc.company_id" t-field="doc.company_id" />
+                        <div t-else="">All companies</div>
+                    </div>
+                    <div class="col-3 mb-2" name="status">
+                        <strong>Status</strong>
+                        <div t-if="doc.active">Active</div>
+                        <div t-else="">Archived</div>
+                    </div>
+                </div>
+
+                <div t-if="doc.description" name="description" class="mb-4">
+                    <strong>Description</strong>
+                    <div t-field="doc.description" />
+                </div>
+
+                <t t-set="contracts" t-value="doc._get_report_contracts()" />
+                <h4 class="mt-4">Open Subscriptions</h4>
+                <p t-if="not contracts" name="no_contracts" class="text-muted">
+                    No open subscription uses this plan.
+                </p>
+                <table
+                    t-else=""
+                    class="table table-sm o_main_table table-borderless mt-2"
+                    name="plan_contracts"
+                >
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th name="th_name" class="text-start">Reference</th>
+                            <th name="th_type" class="text-start">Type</th>
+                            <th name="th_partner" class="text-start">Partner</th>
+                            <th name="th_state" class="text-start">Status</th>
+                            <th
+                                name="th_next_invoice"
+                                class="text-start"
+                            >Next Invoice</th>
+                            <th name="th_total" class="text-end">Total per period</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="contracts" t-as="contract">
+                            <td>
+                                <span t-field="contract.name" />
+                            </td>
+                            <td>
+                                <span t-field="contract.contract_type" />
+                            </td>
+                            <td>
+                                <span t-field="contract.partner_id" />
+                            </td>
+                            <td>
+                                <span t-field="contract.state" />
+                            </td>
+                            <td>
+                                <span t-field="contract.next_invoice_date" />
+                            </td>
+                            <td class="text-end o_price_total">
+                                <span t-field="contract.amount_total" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <t t-set="totals" t-value="doc._get_report_totals()" />
+                <div t-if="totals" class="clearfix" name="total_summary">
+                    <div id="total" class="row">
+                        <div class="col-7 ms-auto">
+                            <table class="table table-sm table-borderless">
+                                <tr
+                                    t-foreach="totals"
+                                    t-as="total"
+                                    class="border-black o_total"
+                                >
+                                    <td>
+                                        <strong
+                                            t-if="total['contract_type'] == 'sale'"
+                                        >Customer subscriptions in progress</strong>
+                                        <strong
+                                            t-else=""
+                                        >Vendor subscriptions in progress</strong>
+                                    </td>
+                                    <td class="text-end">
+                                        <span
+                                            t-out="total['amount']"
+                                            t-options="{'widget': 'monetary', 'display_currency': total['currency']}"
+                                        />
+                                    </td>
+                                </tr>
+                            </table>
+                            <p class="text-muted small text-end">
+                                Total per period of the subscriptions in trial or active.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_subscription_plan">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="alfo_subscription_core.report_subscription_plan_document" />
+            </t>
+        </t>
+    </template>
+</odoo>

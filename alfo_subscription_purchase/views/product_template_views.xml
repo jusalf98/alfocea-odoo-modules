@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="product_template_form_view_inherit" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field
+            name="inherit_id"
+            ref="alfo_subscription_core.product_template_form_view_inherit"
+        />
+        <field name="arch" type="xml">
+            <field name="default_plan_id" position="after">
+                <field
+                    name="purchase_plan_id"
+                    groups="alfo_subscription_core.group_subscription_manager"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

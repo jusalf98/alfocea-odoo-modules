@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="subscription_order_confirm_view_form" model="ir.ui.view">
+        <field name="name">subscription.order.confirm.form</field>
+        <field name="model">subscription.order.confirm</field>
+        <field name="arch" type="xml">
+            <form>
+                <h4>
+                    <field name="order_name" class="oe_inline" />
+                </h4>
+                <div class="alert alert-info" role="alert">
+                    <p>This order will change existing subscriptions.</p>
+                    <p class="mb-0">In green, what the order adds to them.</p>
+                </div>
+                <field name="line_ids">
+                    <list
+                        create="0"
+                        delete="0"
+                        decoration-muted="change == 'current'"
+                        decoration-success="change != 'current'"
+                    >
+                        <field name="contract_name" />
+                        <field name="plan_name" />
+                        <field name="product_id" />
+                        <field name="current_quantity" />
+                        <field name="added_quantity" />
+                        <field name="total_quantity" />
+                        <field name="change" widget="badge" />
+                    </list>
+                </field>
+                <footer>
+                    <button
+                        name="action_confirm"
+                        type="object"
+                        string="Confirm and Add"
+                        class="btn-primary"
+                        data-hotkey="q"
+                    />
+                    <button
+                        name="action_confirm_without_adding"
+                        type="object"
+                        string="Confirm without Adding"
+                        class="btn-secondary"
+                        data-hotkey="w"
+                        help="Confirm the order without changing the existing subscriptions: those products are sold once. New subscriptions are still created."
+                    />
+                    <button special="cancel" string="Cancel" data-hotkey="x" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

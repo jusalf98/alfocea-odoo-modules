@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0-20261112\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 08:34+0000\n"
-"PO-Revision-Date: 2026-11-21 08:34+0000\n"
+"POT-Creation-Date: 2026-11-21 17:29+0000\n"
+"PO-Revision-Date: 2026-11-21 17:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -27,10 +27,36 @@ msgid "Confirm automatically the sale orders generated on each renewal of the cu
 msgstr "Confirma automáticamente los pedidos de venta generados en cada renovación de las suscripciones de clientes con este plan. Si no se marca, se quedan como presupuestos para revisarlos."
 
 #. module: alfo_subscription_sale
+#: model:ir.model.fields,help:alfo_subscription_sale.field_subscription_contract__renewal_document
+msgid "Document created automatically on each period of the subscription."
+msgstr "Documento que se crea automáticamente en cada periodo de la suscripción."
+
+#. module: alfo_subscription_sale
+#: model:ir.model.fields,field_description:alfo_subscription_sale.field_sale_order_line__subscription_trial
+msgid "Free Trial"
+msgstr "Prueba gratuita"
+
+#. module: alfo_subscription_sale
 #. odoo-python
-#: code:addons/alfo_subscription_sale/models/subscription_contract_line.py:0
-msgid "Period: %(start)s - %(end)s"
-msgstr "Periodo: %(start)s - %(end)s"
+#: code:addons/alfo_subscription_sale/models/sale_order_line.py:0
+msgid "Free trial: %(trial)s. Then billed %(billing)s."
+msgstr "Prueba gratuita: %(trial)s. Después se factura %(billing)s."
+
+#. module: alfo_subscription_sale
+#. odoo-python
+#: code:addons/alfo_subscription_sale/models/subscription_contract.py:0
+msgid "Only customer subscriptions can be renewed with sale orders."
+msgstr "Solo las suscripciones de clientes se pueden renovar con pedidos de venta."
+
+#. module: alfo_subscription_sale
+#: model:ir.model.fields,field_description:alfo_subscription_sale.field_subscription_contract__renewal_document
+msgid "Renewal Document"
+msgstr "Documento de renovación"
+
+#. module: alfo_subscription_sale
+#: model:ir.model.fields.selection,name:alfo_subscription_sale.selection__subscription_contract__renewal_document__sale_order
+msgid "Sale Order"
+msgstr "Pedido de venta"
 
 #. module: alfo_subscription_sale
 #: model:ir.model.fields,field_description:alfo_subscription_sale.field_subscription_contract__sale_order_count

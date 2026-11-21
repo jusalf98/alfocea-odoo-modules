@@ -56,8 +56,13 @@
                                 <field name="periodicity" class="oe_inline" />
                             </div>
                             <field name="trial_days" />
+                            <field name="billing_label" />
+                            <field name="reminder_days" />
                         </group>
                         <group name="other">
+                            <field name="group_by_partner" />
+                            <field name="auto_renew" />
+                            <field name="notice_days" invisible="not auto_renew" />
                             <field
                                 name="company_id"
                                 groups="base.group_multi_company"
@@ -83,12 +88,10 @@
                 <templates>
                     <t t-name="card">
                         <field name="name" class="fw-bold fs-5" />
-                        <div class="text-muted">
-                            Every <field name="interval" /> <field name="periodicity" />
-                        </div>
+                        <field name="billing_label" class="text-muted" />
                         <footer>
                             <span invisible="not trial_days">
-                                <field name="trial_days" /> trial days
+                                <field name="trial_label" />
                             </span>
                             <span class="ms-auto">
                                 <field name="contract_count" /> contracts

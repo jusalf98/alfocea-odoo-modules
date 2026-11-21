@@ -67,7 +67,57 @@ class TestSaleOrderSubscription(AlfoSubscriptionSaleCommon):
 
         self.assertEqual(self._contracts_of(), contract)
         self.assertEqual(contract.sale_order_ids, first_order | second_order)
-        self.assertEqual(contract.line_ids.quantity, 1)
+        # Same product bought again: the quantity is added to its line.
+        self.assertEqual(contract.line_ids.quantity, 6)
+
+    def test_new_product_same_plan_creates_new_subscription(self):
+        first_order = self._create_order([(self.product_subscription, 1)])
+        self._confirm_as_salesman(first_order)
+        first_contract = self._contracts_of()
+
+        second_order = self._create_order([(self.product_hours, 1)])
+        self._confirm_as_salesman(second_order)
+
+        second_contract = self._contracts_of() - first_contract
+        self.assertEqual(len(second_contract), 1)
+        self.assertEqual(second_contract.line_ids.product_id, self.product_hours)
+        # Each order is only linked to the subscription with its products.
+        self.assertEqual(second_order.subscription_contract_ids, second_contract)
+        self.assertEqual(first_contract.sale_order_ids, first_order)
+        self.assertEqual(first_contract.line_ids.product_id, self.product_subscription)
+
+    def test_new_product_added_when_plan_groups_by_partner(self):
+        self.plan_monthly.group_by_partner = True
+        first_order = self._create_order([(self.product_subscription, 1)])
+        self._confirm_as_salesman(first_order)
+        contract = self._contracts_of()
+
+        second_order = self._create_order([(self.product_hours, 3)])
+        self._confirm_as_salesman(second_order)
+
+        self.assertEqual(self._contracts_of(), contract)
+        self.assertEqual(
+            contract.line_ids.product_id, self.product_subscription | self.product_hours
+        )
+        self.assertEqual(contract.sale_order_ids, first_order | second_order)
+        self.assertEqual(contract.amount_total, 30.0 + 3 * 12.0)
+
+    def test_mixed_order_existing_and_new_products(self):
+        first_order = self._create_order([(self.product_subscription, 1)])
+        self._confirm_as_salesman(first_order)
+        first_contract = self._contracts_of()
+
+        second_order = self._create_order(
+            [(self.product_subscription, 2), (self.product_hours, 1)]
+        )
+        self._confirm_as_salesman(second_order)
+
+        self.assertEqual(first_contract.line_ids.quantity, 3)
+        new_contract = self._contracts_of() - first_contract
+        self.assertEqual(new_contract.line_ids.product_id, self.product_hours)
+        self.assertEqual(
+            second_order.subscription_contract_ids, first_contract | new_contract
+        )
 
     def test_closed_contract_is_not_reused(self):
         first_order = self._create_order([(self.product_subscription, 1)])
@@ -105,6 +155,7 @@ class TestSaleOrderSubscription(AlfoSubscriptionSaleCommon):
         contract = self._contracts_of()
         self.assertEqual(len(contract), 1)
         self.assertEqual(contract.sale_order_ids, orders)
+        self.assertEqual(contract.line_ids.quantity, 3)
 
     def test_discount_is_applied_to_contract_price(self):
         order = self._create_order([(self.product_subscription, 1)])
