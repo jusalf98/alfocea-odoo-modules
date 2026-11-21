@@ -70,6 +70,7 @@
                         placeholder="Internal description of the plan..."
                     />
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>

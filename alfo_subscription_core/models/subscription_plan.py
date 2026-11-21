@@ -14,12 +14,13 @@ PERIODICITY_UNITS = {
 class SubscriptionPlan(models.Model):
     _name = "subscription.plan"
     _description = "Subscription Plan"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "sequence, id"
 
-    name = fields.Char(required=True, translate=True)
+    name = fields.Char(required=True, translate=True, tracking=True)
     sequence = fields.Integer(default=10)
-    active = fields.Boolean(default=True)
-    company_id = fields.Many2one("res.company", index=True)
+    active = fields.Boolean(default=True, tracking=True)
+    company_id = fields.Many2one("res.company", index=True, tracking=True)
     periodicity = fields.Selection(
         selection=[
             ("daily", "Day(s)"),
@@ -29,10 +30,14 @@ class SubscriptionPlan(models.Model):
         ],
         required=True,
         default="monthly",
+        tracking=True,
     )
-    interval = fields.Integer(string="Repeat Every", required=True, default=1)
+    interval = fields.Integer(
+        string="Repeat Every", required=True, default=1, tracking=True
+    )
     trial_days = fields.Integer(
-        help="Number of free days before the first invoice of the subscription."
+        help="Number of free days before the first invoice of the subscription.",
+        tracking=True,
     )
     description = fields.Text(translate=True)
     contract_ids = fields.One2many(

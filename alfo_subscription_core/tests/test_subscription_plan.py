@@ -36,6 +36,31 @@ class TestSubscriptionPlan(AlfoSubscriptionCoreCommon):
         self.plan_monthly.invalidate_recordset(["contract_count"])
         self.assertEqual(self.plan_monthly.contract_count, 2)
 
+    def _flush_tracking(self):
+        """Run the pending tracking, as a commit would (same as mail tests)."""
+        self.env.flush_all()
+        self.env.cr.flush()
+
+    def test_changes_are_tracked_in_chatter(self):
+        # BaseCommon disables tracking in its context: enable it for this test.
+        plan = self.SubscriptionPlan.with_context(
+            tracking_disable=False, mail_notrack=False
+        ).create({"name": "Tracked", "periodicity": "monthly"})
+        # Odoo does not track changes of records created in the same
+        # transaction: flush the creation first, like a real save would.
+        self._flush_tracking()
+        plan.write({"interval": 3, "trial_days": 7})
+        self._flush_tracking()
+        tracking_values = self.env["mail.tracking.value"].search(
+            [
+                ("mail_message_id.model", "=", "subscription.plan"),
+                ("mail_message_id.res_id", "=", plan.id),
+            ]
+        )
+        self.assertEqual(
+            set(tracking_values.field_id.mapped("name")), {"interval", "trial_days"}
+        )
+
     def test_action_view_contracts(self):
         action = self.plan_monthly.action_view_contracts()
         self.assertEqual(action["res_model"], "subscription.contract")

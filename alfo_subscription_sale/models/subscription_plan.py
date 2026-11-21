@@ -7,6 +7,7 @@ class SubscriptionPlan(models.Model):
     sale_order_auto_confirm = fields.Boolean(
         string="Confirm Renewal Orders",
         default=True,
+        tracking=True,
         help="Confirm automatically the sale orders generated on each renewal of "
         "the customer subscriptions with this plan. If unchecked, they are left "
         "as quotations to review.",
