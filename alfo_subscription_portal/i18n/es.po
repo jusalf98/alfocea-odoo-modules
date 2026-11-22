@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0-20261112\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 17:29+0000\n"
-"PO-Revision-Date: 2026-11-21 17:29+0000\n"
+"POT-Creation-Date: 2026-11-22 17:04+0000\n"
+"PO-Revision-Date: 2026-11-22 17:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -20,6 +20,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription
 msgid "<i class=\"fa fa-download\"/> Download"
 msgstr "<i class=\"fa fa-download\"/> Descargar"
+
+#. module: alfo_subscription_portal
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_subscription_cancel_modal
+msgid "<option value=\"\">Choose a reason…</option>"
+msgstr "<option value=\"\">Elija un motivo…</option>"
 
 #. module: alfo_subscription_portal
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription
@@ -73,19 +78,30 @@ msgstr "Importe"
 
 #. module: alfo_subscription_portal
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_subscription_cancel_modal
 msgid "Cancel subscription"
 msgstr "Cancelar suscripción"
 
 #. module: alfo_subscription_portal
-#: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription
-msgid "Cancel this subscription?"
-msgstr "¿Cancelar esta suscripción?"
-
-#. module: alfo_subscription_portal
 #. odoo-python
 #: code:addons/alfo_subscription_portal/controllers/portal.py:0
-msgid "Cancelled by the customer from the portal."
-msgstr "Cancelada por el cliente desde el portal."
+msgid "Cancelled by the customer from the portal. Reason: %(reason)s. %(comment)s"
+msgstr "Cancelada por el cliente desde el portal. Motivo: %(reason)s. %(comment)s"
+
+#. module: alfo_subscription_portal
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription
+msgid "Choose a reason to cancel the subscription."
+msgstr "Elija un motivo para cancelar la suscripción."
+
+#. module: alfo_subscription_portal
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_subscription_cancel_modal
+msgid "Close"
+msgstr "Cerrar"
+
+#. module: alfo_subscription_portal
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_subscription_cancel_modal
+msgid "Comment (optional)"
+msgstr "Comentario (opcional)"
 
 #. module: alfo_subscription_portal
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription
@@ -128,6 +144,11 @@ msgid "Follow, download, pause or cancel your subscriptions"
 msgstr "Consulte, descargue, pause o cancele sus suscripciones"
 
 #. module: alfo_subscription_portal
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_subscription_cancel_modal
+msgid "Keep my subscription"
+msgstr "Mantener mi suscripción"
+
+#. module: alfo_subscription_portal
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscriptions
 msgid "Next Invoice"
 msgstr "Próxima factura"
@@ -162,6 +183,11 @@ msgstr "URL de acceso al portal"
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription
 msgid "Quantity"
 msgstr "Cantidad"
+
+#. module: alfo_subscription_portal
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_subscription_cancel_modal
+msgid "Reason"
+msgstr "Motivo"
 
 #. module: alfo_subscription_portal
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription
@@ -243,6 +269,11 @@ msgstr "Total por periodo"
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription
 msgid "Unit Price"
 msgstr "Precio unitario"
+
+#. module: alfo_subscription_portal
+#: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_subscription_cancel_modal
+msgid "We are sorry to see you go. Please tell us why you are cancelling."
+msgstr "Sentimos que se vaya. Por favor, díganos por qué cancela."
 
 #. module: alfo_subscription_portal
 #: model_terms:ir.ui.view,arch_db:alfo_subscription_portal.portal_my_subscription

@@ -36,10 +36,10 @@ class TestPortalSubscription(HttpCase):
         )
         (cls.contract | cls.other_contract).action_start()
 
-    def _post(self, contract, action):
+    def _post(self, contract, action, **data):
         return self.url_open(
             f"/my/subscriptions/{contract.id}/{action}",
-            data={"csrf_token": http.Request.csrf_token(self)},
+            data={"csrf_token": http.Request.csrf_token(self), **data},
         )
 
     def test_customer_sees_only_their_subscriptions(self):
@@ -89,12 +89,42 @@ class TestPortalSubscription(HttpCase):
 
     def test_cancel_from_the_portal(self):
         self.plan.portal_allow_cancel = True
+        reason = self.env.ref("alfo_subscription_core.close_reason_too_expensive")
         self.authenticate("sub_portal", "sub_portal")
-        self._post(self.other_contract, "cancel")
+
+        # The cancel dialog offers the close reasons, but not the pause one.
+        response = self.url_open(self.contract.get_portal_url())
+        self.assertIn('name="reason_id"', response.text)
+        self.assertIn(reason.name, response.text)
+        self.assertNotIn(
+            self.env.ref("alfo_subscription_core.close_reason_temporary").name,
+            response.text,
+        )
+
+        self._post(self.other_contract, "cancel", reason_id=reason.id)
         self.assertEqual(self.other_contract.state, "active")
-        self._post(self.contract, "cancel")
+
+        # Without a valid reason nothing is cancelled.
+        response = self._post(self.contract, "cancel")
+        self.assertEqual(self.contract.state, "active")
+        self.assertIn("error=1", response.url)
+        temporary = self.env.ref("alfo_subscription_core.close_reason_temporary")
+        self._post(self.contract, "cancel", reason_id=temporary.id)
+        self.assertEqual(self.contract.state, "active")
+
+        self._post(
+            self.contract, "cancel", reason_id=reason.id, comment="<b>Too much</b>"
+        )
         self.assertEqual(self.contract.state, "cancelled")
         self.assertEqual(self.contract.date_closed, fields.Date.today())
+        self.assertEqual(self.contract.close_reason_id, reason)
+        message = self.contract.message_ids.filtered(
+            lambda m: "Cancelled by the customer" in (m.body or "")
+        )
+        self.assertEqual(message.author_id, self.customer)
+        self.assertIn(reason.name, message.body)
+        # The customer's comment is escaped, not rendered as HTML.
+        self.assertIn("&lt;b&gt;Too much&lt;/b&gt;", message.body)
 
     def test_stop_renewal_from_the_portal(self):
         self.plan.write(

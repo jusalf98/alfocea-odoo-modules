@@ -37,8 +37,10 @@ their customer subscriptions:
   Pause* and *Customers Can Cancel* options of the plan):
 
   - **Pause** and **Resume**.
-  - **Cancel** the subscription, or for plans renewed automatically,
-    **Do not renew** it (only before the notice deadline).
+  - **Cancel** the subscription, choosing a close reason (required) and
+    an optional comment, so that the cancellation appears in the churn
+    report. For plans renewed automatically, **Do not renew** it instead
+    (only before the notice deadline).
 
 Every action of the customer is recorded in the chatter of the
 subscription, with the customer as author. Record rules make sure that a

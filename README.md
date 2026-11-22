@@ -284,7 +284,7 @@ alfocea-odoo-modules/
 
 - **Mi cuenta → Suscripciones:** el cliente ve sus suscripciones de cliente con plan, facturación, próxima factura, total por periodo y estado.
 - **Detalle** con fechas, líneas, total por periodo, historial de mensajes y **descarga del PDF**.
-- **Autoservicio**, si el plan lo permite (*Los clientes pueden pausar* / *pueden cancelar*): **pausar**, **reanudar**, **cancelar** o, en planes con renovación automática, **no renovar** (antes del fin del preaviso). Cada acción queda en el chatter con el cliente como autor.
+- **Autoservicio**, si el plan lo permite (*Los clientes pueden pausar* / *pueden cancelar*): **pausar**, **reanudar**, **cancelar** (eligiendo obligatoriamente un motivo de baja y, si quiere, un comentario, para que cuente en el informe de bajas) o, en planes con renovación automática, **no renovar** (antes del fin del preaviso). Cada acción queda en el chatter con el cliente como autor.
 - **Seguridad:** reglas de registro para que un usuario portal solo vea las suscripciones de su empresa; también se pueden compartir con enlace (token de acceso), como los demás documentos de Odoo.
 
 ### Subscription Dashboard (`alfo_subscription_dashboard`)
@@ -368,7 +368,7 @@ Las acciones planificadas se ejecutan solas cada día. Para no esperar, se lanza
 15. **Portal del cliente:**
    1. En el plan, activa *Los clientes pueden pausar* y *pueden cancelar*.
    2. Crea y confirma un presupuesto con un producto de suscripción para el contacto de un usuario portal (por ejemplo, el del usuario `portal` de los datos de demostración).
-   3. Entra con ese usuario portal en una ventana de incógnito y abre *Mi cuenta → Suscripciones*: verás su suscripción, podrás descargar el PDF y pausarla o cancelarla.
+   3. Entra con ese usuario portal en una ventana de incógnito y abre *Mi cuenta → Suscripciones*: verás su suscripción, podrás descargar el PDF y pausarla o cancelarla. Al cancelar, el cliente elige el motivo de baja en una ventana y puede añadir un comentario.
    4. De vuelta como administrador, el chatter de la suscripción muestra la acción con el cliente como autor.
 16. **Análisis:** cancela una suscripción con **Cancelar**, eligiendo un motivo y abre *Suscripciones → Informes → Bajas* y *Ingresos recurrentes (MRR)*.
 

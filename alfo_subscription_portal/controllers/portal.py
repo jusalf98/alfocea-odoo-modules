@@ -22,6 +22,15 @@ class SubscriptionPortal(CustomerPortal):
         # The record rules of the portal group keep the customer's ones only.
         return [("contract_type", "=", "sale"), ("state", "!=", "draft")]
 
+    def _get_portal_close_reasons(self):
+        """Close reasons a customer can choose when cancelling: all the active
+        ones but the temporary break, which is a pause reason."""
+        reasons = request.env["subscription.close.reason"].sudo().search([])
+        pause_reason = request.env.ref(
+            "alfo_subscription_core.close_reason_temporary", raise_if_not_found=False
+        )
+        return reasons - pause_reason if pause_reason else reasons
+
     @http.route(
         ["/my/subscriptions", "/my/subscriptions/page/<int:page>"],
         type="http",
@@ -84,6 +93,8 @@ class SubscriptionPortal(CustomerPortal):
                 "subscription": contract_sudo,
                 "page_name": "subscription",
                 "message": kw.get("message"),
+                "error": kw.get("error"),
+                "close_reasons": self._get_portal_close_reasons(),
             },
             "my_subscriptions_history",
             False,
@@ -91,7 +102,11 @@ class SubscriptionPortal(CustomerPortal):
         return request.render("alfo_subscription_portal.portal_my_subscription", values)
 
     def _subscription_portal_action(self, contract_id, access_token, check, apply):
-        """Check the access and the permission, apply, and log it as the customer."""
+        """Check the access and the permission, apply, and log it as the customer.
+
+        ``apply`` returns the message to log, or nothing when the request is not
+        valid (e.g. a missing reason): then nothing is done and an error shown.
+        """
         try:
             contract_sudo = self._document_check_access(
                 "subscription.contract", contract_id, access_token
@@ -101,6 +116,10 @@ class SubscriptionPortal(CustomerPortal):
         if not getattr(contract_sudo, check)():
             return request.redirect(contract_sudo.get_portal_url())
         message = apply(contract_sudo)
+        if not message:
+            return request.redirect(
+                contract_sudo.get_portal_url(query_string="&error=1")
+            )
         contract_sudo.message_post(
             body=message, author_id=request.env.user.partner_id.id
         )
@@ -145,10 +164,26 @@ class SubscriptionPortal(CustomerPortal):
         methods=["POST"],
         website=True,
     )
-    def portal_subscription_cancel(self, contract_id, access_token=None, **kw):
+    def portal_subscription_cancel(
+        self, contract_id, access_token=None, reason_id=None, comment=None, **kw
+    ):
+        reason = self._get_portal_close_reasons().filtered(
+            lambda r: str(r.id) == str(reason_id)
+        )
+        comment = (comment or "").strip()[:1000]
+
         def apply(contract):
+            if not reason:
+                return False
             contract.action_cancel()
-            return request.env._("Cancelled by the customer from the portal.")
+            contract.close_reason_id = reason
+            # A plain string: message_post escapes the customer's comment.
+            return request.env._(
+                "Cancelled by the customer from the portal. Reason: %(reason)s. "
+                "%(comment)s",
+                reason=reason.name,
+                comment=comment,
+            )
 
         return self._subscription_portal_action(
             contract_id, access_token, "_portal_can_cancel", apply

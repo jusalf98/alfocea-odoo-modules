@@ -110,6 +110,9 @@
             <div t-if="message" class="alert alert-success mt-3" role="status">
                 Your request has been saved.
             </div>
+            <div t-if="error" class="alert alert-danger mt-3" role="alert">
+                Choose a reason to cancel the subscription.
+            </div>
             <div class="card mt-3">
                 <div class="card-header d-flex flex-wrap align-items-center gap-2">
                     <h4 class="mb-0 me-auto">
@@ -206,7 +209,6 @@
                     </table>
                     <div class="d-flex flex-wrap gap-2">
                         <t t-set="confirm_pause">Pause this subscription?</t>
-                        <t t-set="confirm_cancel">Cancel this subscription?</t>
                         <t t-set="confirm_stop">Do not renew this subscription?</t>
                         <t t-call="alfo_subscription_portal.portal_subscription_action">
                             <t
@@ -238,19 +240,20 @@
                             <t t-set="button_class" t-value="'btn-outline-danger'" />
                             <t t-set="label">Do not renew</t>
                         </t>
-                        <t t-call="alfo_subscription_portal.portal_subscription_action">
-                            <t
-                                t-set="allowed"
-                                t-value="subscription._portal_can_cancel()"
-                            />
-                            <t t-set="action" t-value="'cancel'" />
-                            <t t-set="confirm_text" t-value="confirm_cancel" />
-                            <t t-set="button_class" t-value="'btn-outline-danger'" />
-                            <t t-set="label">Cancel subscription</t>
-                        </t>
+                        <button
+                            t-if="subscription._portal_can_cancel()"
+                            type="button"
+                            class="btn btn-sm btn-outline-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#subscription_cancel_modal"
+                        >Cancel subscription</button>
                     </div>
                 </div>
             </div>
+            <t
+                t-if="subscription._portal_can_cancel()"
+                t-call="alfo_subscription_portal.portal_subscription_cancel_modal"
+            />
             <div class="mt-4">
                 <h4>Communication history</h4>
                 <t t-call="portal.message_thread" />
@@ -275,5 +278,99 @@
                 t-out="label"
             />
         </form>
+    </template>
+
+    <!-- Cancel dialog: the customer chooses a close reason (required) -->
+    <template
+        id="portal_subscription_cancel_modal"
+        name="Subscription portal cancel dialog"
+    >
+        <div
+            id="subscription_cancel_modal"
+            class="modal fade"
+            tabindex="-1"
+            aria-labelledby="subscription_cancel_modal_title"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <form
+                    class="modal-content"
+                    method="post"
+                    t-att-action="'/my/subscriptions/%s/cancel' % subscription.id"
+                >
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        t-att-value="request.csrf_token()"
+                    />
+                    <input
+                        type="hidden"
+                        name="access_token"
+                        t-att-value="access_token or ''"
+                    />
+                    <div class="modal-header">
+                        <h5
+                            id="subscription_cancel_modal_title"
+                            class="modal-title"
+                        >Cancel subscription</h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        />
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            We are sorry to see you go. Please tell us why you are cancelling.
+                        </p>
+                        <div class="mb-3">
+                            <label
+                                for="subscription_cancel_reason"
+                                class="form-label"
+                            >Reason</label>
+                            <select
+                                id="subscription_cancel_reason"
+                                name="reason_id"
+                                class="form-select"
+                                required="required"
+                            >
+                                <option value="">Choose a reason…</option>
+                                <option
+                                    t-foreach="close_reasons"
+                                    t-as="reason"
+                                    t-att-value="reason.id"
+                                    t-out="reason.name"
+                                />
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                for="subscription_cancel_comment"
+                                class="form-label"
+                            >Comment (optional)</label>
+                            <textarea
+                                id="subscription_cancel_comment"
+                                name="comment"
+                                class="form-control"
+                                rows="3"
+                                maxlength="1000"
+                            />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >Keep my subscription</button>
+                        <button
+                            type="submit"
+                            class="btn btn-danger"
+                        >Cancel subscription</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </template>
 </odoo>
