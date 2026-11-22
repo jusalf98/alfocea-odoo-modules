@@ -366,11 +366,11 @@ Las acciones planificadas se ejecutan solas cada día. Para no esperar, se lanza
     2. Puede gestionar suscripciones, pero no ve **Terminar prueba** y en *Configuración* los planes y los motivos de baja son de solo lectura.
 14. **Informes PDF:** en una suscripción, *Imprimir → Suscripción*. En la lista de planes, selecciona varios e imprime *Plan de suscripción*: un PDF por plan con sus suscripciones y totales.
 15. **Portal del cliente:**
-   1. En el plan, activa *Los clientes pueden pausar* y *pueden cancelar*.
-   2. Crea y confirma un presupuesto con un producto de suscripción para el contacto de un usuario portal (por ejemplo, el del usuario `portal` de los datos de demostración).
-   3. Entra con ese usuario portal en una ventana de incógnito y abre *Mi cuenta → Suscripciones*: verás su suscripción, podrás descargar el PDF y pausarla o cancelarla. Al cancelar, el cliente elige el motivo de baja en una ventana y puede añadir un comentario.
-   4. De vuelta como administrador, el chatter de la suscripción muestra la acción con el cliente como autor.
-16. **Análisis:** cancela una suscripción con **Cancelar**, eligiendo un motivo y abre *Suscripciones → Informes → Bajas* y *Ingresos recurrentes (MRR)*.
+    1. En el plan, activa *Los clientes pueden pausar* y *pueden cancelar*.
+    2. Crea y confirma un presupuesto con un producto de suscripción para el contacto de un usuario portal (por ejemplo, el del usuario `portal` de los datos de demostración).
+    3. Entra con ese usuario portal en una ventana de incógnito y abre *Mi cuenta → Suscripciones*: verás su suscripción, podrás descargar el PDF y pausarla o cancelarla. Al cancelar, el cliente elige el motivo de baja en una ventana y puede añadir un comentario.
+    4. De vuelta como administrador, el chatter de la suscripción muestra la acción con el cliente como autor.
+16. **Análisis:** cancela una suscripción con **Cancelar**, eligiendo un motivo, y abre *Suscripciones → Informes → Bajas* y *Ingresos recurrentes (MRR)*.
 
 ## 7. Calidad y pruebas
 
