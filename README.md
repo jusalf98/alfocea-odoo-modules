@@ -319,24 +319,58 @@ Lo que ve un usuario portal lo decide la seguridad de cada módulo: permisos de 
 
 ### Guion de prueba rápido
 
-1. **Crea los planes:** en *Suscripciones → Configuración → Planes*, crea "Mensual" (cada 1 mes) y "Mensual con prueba" (14 días de prueba).
+Las acciones planificadas se ejecutan solas cada día. Para no esperar, se lanzan a mano desde *Ajustes → Técnico → Acciones planificadas* (con el modo desarrollador activado), abriendo la acción y pulsando **Ejecutar manualmente**.
+
+1. **Crea los planes:** en *Suscripciones → Configuración → Planes*, crea:
+   - "Mensual": cada 1 mes, con **Una suscripción por contacto** marcado.
+   - "Mensual con prueba": cada 1 mes, con 14 días de prueba.
+
+   En cada plan, la periodicidad aparece en lenguaje natural ("cada mes") y el chatter registra los cambios.
 2. **Asigna un plan a un producto:** abre un producto y pon "Mensual" en **Plan de suscripción**, junto a la categoría.
-3. **Vende el producto:** crea y confirma un presupuesto con él. En el pedido aparece el botón **Suscripciones**, con la suscripción ya **Activa**.
-4. **Genera una renovación:**
+3. **Vende el producto:**
+   1. Crea y confirma un presupuesto con él. En el pedido aparece el botón **Suscripciones**, con la suscripción ya **Activa**.
+   2. En la suscripción, el **Responsable** es el comercial del pedido y el chatter muestra la creación y los cambios de estado.
+4. **Añade a una suscripción existente:**
+   1. Crea otro presupuesto para el mismo cliente con el mismo producto, o con otro producto del mismo plan, y pulsa **Confirmar**.
+   2. Se abre un asistente con lo que va a cambiar: cantidad añadida, línea nueva o suscripción nueva.
+   3. Elige **Confirmar y añadir**, **Confirmar sin añadir** (el pedido se confirma sin tocar la suscripción) o **Cancelar**.
+   4. Si después cancelas ese pedido, los cambios que hizo en la suscripción se deshacen y quedan anotados en el chatter.
+5. **Prueba gratuita:**
+   1. Pon "Mensual con prueba" a otro producto y añádelo a un presupuesto. La línea sale en verde, con un 100 % de descuento y la nota "Prueba gratuita: 14 días. Después se factura cada mes.".
+   2. Al confirmar, la suscripción queda **En prueba**.
+   3. Pasa a *Activa* sola cuando llega la fecha de fin de la prueba (acción *"Suscripciones: actualizar estados de prueba y vencimiento"*). Un administrador de Suscripciones puede adelantarlo con **Terminar prueba**.
+6. **Genera una renovación:**
    1. En la suscripción, pon la **Fecha de la próxima factura** a hoy.
-   2. Ve a *Ajustes → Técnico → Acciones planificadas → "Suscripciones: crear pedidos de venta de renovación"* y pulsa **Ejecutar manualmente**.
+   2. Ejecuta *"Suscripciones: crear pedidos de venta de renovación"*.
    3. Se crea el pedido del periodo y la fecha avanza un mes.
-5. **Compra con suscripción:** en un producto comprable, pon un plan en **Plan de suscripción de proveedor** y confirma un pedido de compra con él. En el pedido aparece el botón **Suscripciones**, con la suscripción de proveedor (`PSUB/…`) ya activa. Sus renovaciones se generan con *"Suscripciones: crear pedidos de compra de renovación"*.
-6. **Factura directamente:**
+7. **Compra con suscripción:** en un producto comprable, pon un plan en **Plan de suscripción de proveedor** y confirma un pedido de compra con él. En el pedido aparece el botón **Suscripciones**, con la suscripción de proveedor (`PSUB/…`) ya activa. Sus renovaciones se generan con *"Suscripciones: crear pedidos de compra de renovación"*.
+8. **Factura directamente:**
    1. En una suscripción activa, cambia el **Documento de renovación** a *Factura* y pon la próxima fecha a hoy.
    2. Ejecuta *"Suscripciones: crear facturas de renovación"*.
    3. Se crea la factura del periodo: de cliente o de proveedor, según el tipo de suscripción.
-7. **Portal del cliente:**
+9. **Pausa y reanuda:**
+   1. En una suscripción activa, pulsa **Pausar**: el asistente pide un motivo, una nota y, opcionalmente, una **Fecha de reanudación**.
+   2. Pulsa **Reanudar**, o espera a esa fecha (acción *"Suscripciones: actualizar estados de prueba y vencimiento"*). La próxima factura, el fin de la prueba y la fecha de fin se desplazan los días que estuvo en pausa; si se reanuda el mismo día, no cambian.
+10. **Cambia de plan:** en una suscripción, pulsa **Cambiar de plan** y elige otro. El periodo actual se mantiene, las siguientes renovaciones usan el plan nuevo y el cambio queda en el chatter.
+11. **Renovación automática y preaviso:**
+    1. En el plan "Mensual", marca **Renovar automáticamente** y pon 30 en **Días de preaviso**.
+    2. Crea una suscripción a mano con ese plan, fecha de inicio hace dos meses y **Fecha de fin** ayer, y pulsa **Iniciar**.
+    3. Ejecuta *"Suscripciones: actualizar estados de prueba y vencimiento"*: en lugar de vencer, la fecha de fin se amplía un mes y el chatter lo anota.
+    4. Pulsa **No renovar** (solo se permite antes del fin del preaviso) y **Volver a renovar** para deshacerlo. Sin renovación automática, la suscripción pasa a *Vencida*.
+12. **Correos de aviso:**
+    1. Con **Días de aviso** a 7 en el plan (es el valor por defecto), pon la próxima factura de una suscripción dentro de 5 días.
+    2. Ejecuta *"Suscripciones: enviar correos de aviso"*.
+    3. El chatter muestra el correo "Su suscripción … se renovará pronto", en el idioma del cliente. Igual se avisa del fin de la prueba y del vencimiento, y cada aviso se envía una sola vez. Sin servidor de correo saliente configurado, el envío queda en *Ajustes → Técnico → Correos electrónicos*.
+13. **Permisos:**
+    1. Crea en *Ajustes → Usuarios* un usuario interno con el rol **Usuario** en Suscripciones (no Administrador) y entra con él.
+    2. Puede gestionar suscripciones, pero no ve **Terminar prueba** y en *Configuración* los planes y los motivos de baja son de solo lectura.
+14. **Informes PDF:** en una suscripción, *Imprimir → Suscripción*. En la lista de planes, selecciona varios e imprime *Plan de suscripción*: un PDF por plan con sus suscripciones y totales.
+15. **Portal del cliente:**
    1. En el plan, activa *Los clientes pueden pausar* y *pueden cancelar*.
    2. Crea y confirma un presupuesto con un producto de suscripción para el contacto de un usuario portal (por ejemplo, el del usuario `portal` de los datos de demostración).
    3. Entra con ese usuario portal en una ventana de incógnito y abre *Mi cuenta → Suscripciones*: verás su suscripción, podrás descargar el PDF y pausarla o cancelarla.
    4. De vuelta como administrador, el chatter de la suscripción muestra la acción con el cliente como autor.
-8. **Análisis:** cancela una suscripción eligiendo un motivo y abre *Suscripciones → Informes → Bajas* y *Ingresos recurrentes (MRR)*.
+16. **Análisis:** cancela una suscripción con **Cancelar**, eligiendo un motivo y abre *Suscripciones → Informes → Bajas* y *Ingresos recurrentes (MRR)*.
 
 ## 7. Calidad y pruebas
 
@@ -372,12 +406,195 @@ El proyecto se ha desarrollado con **Claude Code** como asistente de programaci�
 
 Todo el código se ha verificado ejecutando sus tests en contenedores Docker, con bases de datos desechables, antes de darlo por bueno.
 
-## 9. Hoja de ruta
+## 9. Base de datos
 
-- Prorrateo al añadir productos o cambiar de plan a mitad de periodo.
-- Cobro automático con tarjeta guardada (tokens de pago) en las facturas de renovación.
-- Facturación por consumo (horas, GB…) con mínimo incluido y exceso facturado aparte.
-- Entregas periódicas con control de stock para suscripciones de productos físicos.
+La base de datos es **PostgreSQL 16**. No hay scripts SQL: el ORM de Odoo crea y actualiza las tablas a partir de los modelos Python al instalar o actualizar los módulos.
+
+- Cada modelo es una tabla: el nombre del modelo con los puntos cambiados por guiones bajos (`subscription.contract` → `subscription_contract`).
+- Todas las tablas tienen la clave primaria `id` y los campos de auditoría `create_uid`, `create_date`, `write_uid` y `write_date`.
+- Cada campo `Many2one` es una columna con **clave foránea**; su comportamiento al borrar el registro relacionado (`ON DELETE`) se indica en las tablas.
+- Los `Many2many` crean una **tabla intermedia**, y los `One2many` no ocupan columna: son la vista inversa de un `Many2one`.
+- Los campos calculados **no almacenados** no ocupan columna; aquí se indican solo cuando son útiles para entender el modelo.
+
+### Diagrama entidad-relación
+
+```mermaid
+erDiagram
+    subscription_plan ||--o{ subscription_contract : "plan_id"
+    res_partner ||--o{ subscription_contract : "partner_id"
+    res_users ||--o{ subscription_contract : "user_id"
+    subscription_close_reason ||--o{ subscription_contract : "close_reason_id"
+    subscription_contract ||--o{ subscription_contract_line : "contract_id"
+    product_product ||--o{ subscription_contract_line : "product_id"
+    subscription_contract ||--o{ subscription_contract_order_change : "contract_id"
+    subscription_contract_line |o--o{ subscription_contract_order_change : "contract_line_id"
+    subscription_plan |o--o{ product_template : "default_plan_id / purchase_plan_id"
+    subscription_contract }o--o{ sale_order : "subscription_contract_sale_order_rel"
+    subscription_contract }o--o{ purchase_order : "subscription_contract_purchase_order_rel"
+    subscription_contract |o--o{ account_move : "subscription_contract_id"
+```
+
+### Tablas propias
+
+#### `subscription_plan`: planes de suscripción
+
+Hereda el chatter (`mail.thread`, `mail.activity.mixin`). Orden por defecto: `sequence, id`.
+
+| Campo | Tipo | Obligatorio | Descripción |
+|---|---|:---:|---|
+| `name` | char (traducible) | ✔ | Nombre del plan |
+| `sequence` | integer | | Orden en las listas (por defecto 10) |
+| `active` | boolean | | Archivado (por defecto, activo) |
+| `company_id` | many2one → `res_company` (SET NULL) | | Compañía; vacío = todas |
+| `periodicity` | selection | ✔ | `daily`, `weekly`, `monthly` (por defecto), `yearly` |
+| `interval` | integer | ✔ | Repetir cada *n* periodos (por defecto 1) |
+| `trial_days` | integer | | Días de prueba gratuita |
+| `description` | text (traducible) | | Descripción |
+| `group_by_partner` | boolean | | Una suscripción por contacto: los productos nuevos se añaden a la suscripción abierta |
+| `reminder_days` | integer | | Días de antelación de los avisos por correo (por defecto 7; 0 = sin avisos) |
+| `auto_renew` | boolean | | Renovar automáticamente la fecha de fin |
+| `notice_days` | integer | | Días de preaviso para pedir no renovar (por defecto 30) |
+| `sale_order_auto_confirm` | boolean | | *(sale)* Confirmar los pedidos de venta de renovación |
+| `purchase_order_auto_confirm` | boolean | | *(purchase)* Confirmar los pedidos de compra de renovación |
+| `invoice_auto_post` | boolean | | *(account)* Publicar las facturas de renovación |
+| `portal_allow_pause` | boolean | | *(portal)* El cliente puede pausar y reanudar desde el portal |
+| `portal_allow_cancel` | boolean | | *(portal)* El cliente puede cancelar o pedir no renovar desde el portal |
+
+Calculados sin almacenar: `billing_label` ("cada mes", "cada 3 semanas"), `trial_label` ("1 día", "14 días") y `contract_count`.
+
+#### `subscription_contract`: suscripciones
+
+Hereda el chatter y, con el módulo de portal, `portal.mixin`. Orden por defecto: `date_start desc, id desc`.
+
+| Campo | Tipo | Obligatorio | Descripción |
+|---|---|:---:|---|
+| `name` | char, índice | ✔ | Referencia por secuencia: `SUB/00001` (cliente) o `PSUB/00001` (proveedor) |
+| `contract_type` | selection, índice | ✔ | `sale` (cliente) o `purchase` (proveedor) |
+| `partner_id` | many2one → `res_partner` (RESTRICT), índice | ✔ | Cliente o proveedor |
+| `plan_id` | many2one → `subscription_plan` (RESTRICT), índice | ✔ | Plan |
+| `company_id` | many2one → `res_company` (RESTRICT), índice | ✔ | Compañía |
+| `user_id` | many2one → `res_users` (SET NULL), índice | | Responsable; recibe las actividades si falla una renovación |
+| `state` | selection, índice | ✔ | `draft`, `trial`, `active`, `paused`, `cancelled`, `expired` |
+| `date_start` | date | ✔ | Fecha de inicio |
+| `date_end` | date | | Fecha de fin (vacía = indefinida) |
+| `trial_end_date` | date, calculado y almacenado | | Fin de la prueba: inicio + días de prueba del plan |
+| `next_invoice_date` | date | | Fecha del próximo documento de renovación |
+| `renewal_document` | selection, calculado y almacenado | ✔ | Con qué se renueva: `none`, `sale_order`, `purchase_order` o `invoice` (cada módulo añade su opción) |
+| `amount_total` | monetary, calculado y almacenado | | Total por periodo (suma de las líneas) |
+| `note` | html | | Notas internas |
+| `close_reason_id` | many2one → `subscription_close_reason` (SET NULL) | | Motivo de baja o de pausa |
+| `date_closed` | date | | Fecha de baja (cancelación o vencimiento) |
+| `paused_date` | date | | Fecha en que se pausó |
+| `resume_date` | date | | Fecha de reanudación automática |
+| `do_not_renew` | boolean | | El cliente pidió no renovar |
+| `renewal_reminder_date` | date | | Fecha de renovación ya avisada (evita avisos repetidos) |
+| `trial_reminder_sent` | boolean | | Aviso de fin de prueba enviado |
+| `expiry_reminder_sent` | boolean | | Aviso de vencimiento enviado |
+| `recurring_monthly` | monetary, calculado y almacenado | | *(dashboard)* MRR: total por periodo llevado a un mes |
+| `recurring_yearly` | monetary, calculado y almacenado | | *(dashboard)* ARR: total por periodo llevado a un año |
+| `access_token` | char | | *(portal)* Token para compartir la suscripción por enlace |
+
+Calculados sin almacenar: `currency_id` (de la compañía), `auto_renew` (del plan), `notice_deadline` (fecha de fin − días de preaviso), `access_url` y los contadores de pedidos y facturas.
+
+#### `subscription_contract_line`: líneas de la suscripción
+
+Orden por defecto: `contract_id, sequence, id`.
+
+| Campo | Tipo | Obligatorio | Descripción |
+|---|---|:---:|---|
+| `contract_id` | many2one → `subscription_contract` (CASCADE), índice | ✔ | Suscripción; al borrarla se borran sus líneas |
+| `sequence` | integer | | Orden de las líneas |
+| `company_id` | many2one → `res_company`, relacionado y almacenado | | Compañía de la suscripción (reglas multicompañía) |
+| `product_id` | many2one → `product_product` (RESTRICT) | ✔ | Producto |
+| `name` | text, calculado y almacenado | ✔ | Descripción (por defecto, la del producto) |
+| `quantity` | float | | Cantidad (por defecto 1) |
+| `price_unit` | float, calculado y almacenado | | Precio de venta o de compra según el tipo de suscripción; editable |
+| `price_subtotal` | monetary, calculado y almacenado | | Cantidad × precio |
+
+#### `subscription_contract_order_change`: cambios hechos desde pedidos
+
+Registra qué cambió cada pedido en las suscripciones, para poder deshacerlo si el pedido se cancela. Orden por defecto: `id desc`.
+
+| Campo | Tipo | Obligatorio | Descripción |
+|---|---|:---:|---|
+| `contract_id` | many2one → `subscription_contract` (CASCADE), índice | ✔ | Suscripción afectada |
+| `res_model` | char, índice | ✔ | Modelo del pedido (`sale.order` o `purchase.order`) |
+| `res_id` | many2one_reference, índice | ✔ | ID del pedido |
+| `order_name` | char | | Referencia del pedido |
+| `change_type` | selection | ✔ | `quantity` (cantidad añadida), `new_line` (línea añadida) o `new_subscription` (suscripción creada) |
+| `contract_line_id` | many2one → `subscription_contract_line` (SET NULL) | | Línea afectada |
+| `product_id` | many2one → `product_product` (SET NULL) | | Producto |
+| `quantity` | float | | Cantidad añadida |
+| `reverted` | boolean | | Ya deshecho |
+
+#### `subscription_close_reason`: motivos de baja
+
+Catálogo configurable, con 6 motivos de ejemplo. Orden por defecto: `sequence, id`.
+
+| Campo | Tipo | Obligatorio | Descripción |
+|---|---|:---:|---|
+| `name` | char (traducible) | ✔ | Motivo |
+| `sequence` | integer | | Orden |
+| `active` | boolean | | Archivado |
+
+### Tablas intermedias (Many2many)
+
+| Tabla | Columnas | Relación |
+|---|---|---|
+| `subscription_contract_sale_order_rel` | `contract_id`, `order_id` | Suscripciones ↔ pedidos de venta *(sale)* |
+| `subscription_contract_purchase_order_rel` | `contract_id`, `order_id` | Suscripciones ↔ pedidos de compra *(purchase)* |
+
+### Campos añadidos a tablas estándar de Odoo
+
+| Tabla | Campo | Tipo | Módulo | Descripción |
+|---|---|---|---|---|
+| `product_template` | `default_plan_id` | many2one → `subscription_plan` (SET NULL) | core | Plan con el que se vende el producto |
+| `product_template` | `purchase_plan_id` | many2one → `subscription_plan` (SET NULL) | purchase | Plan con el que se compra el producto |
+| `sale_order_line` | `subscription_trial` | boolean, calculado y almacenado | sale | La línea es una prueba gratuita (descuento del 100 %) |
+| `account_move` | `subscription_contract_id` | many2one → `subscription_contract` (SET NULL), índice | account | Suscripción que generó la factura |
+
+### Restricciones
+
+**Restricciones de base de datos** (PostgreSQL):
+
+- `NOT NULL` en todos los campos obligatorios de las tablas anteriores.
+- Claves foráneas con su `ON DELETE`:
+  - **RESTRICT:** no se puede borrar un contacto, plan, compañía o producto que tenga suscripciones.
+  - **CASCADE:** al borrar una suscripción se borran sus líneas y su registro de cambios.
+  - **SET NULL:** al borrar un motivo de baja, un responsable o una suscripción, el campo queda vacío en los registros que lo usan.
+
+**Restricciones de modelo** (`@api.constrains`, se comprueban al guardar):
+
+| Modelo | Restricción | Mensaje |
+|---|---|---|
+| `subscription.plan` | `interval` > 0 | El intervalo debe ser mayor que 0 |
+| `subscription.plan` | `trial_days` ≥ 0 | Los días de prueba no pueden ser negativos |
+| `subscription.plan` | `reminder_days` y `notice_days` ≥ 0 | Los días de aviso y de preaviso no pueden ser negativos |
+| `subscription.contract` | `date_end` ≥ `date_start` | La fecha de fin no puede ser anterior a la de inicio |
+| `subscription.contract` | `renewal_document = sale_order` solo si `contract_type = sale` *(sale)* | Solo las suscripciones de cliente se renuevan con pedidos de venta |
+| `subscription.contract` | `renewal_document = purchase_order` solo si `contract_type = purchase` *(purchase)* | Solo las suscripciones de proveedor se renuevan con pedidos de compra |
+| `subscription.contract.line` | `quantity` > 0 | La cantidad debe ser mayor que 0 |
+
+**Reglas de negocio en los métodos** (lanzan un error si no se cumplen):
+
+- Las transiciones de estado solo se permiten desde los estados válidos; por ejemplo, solo se pausa una suscripción en prueba o activa.
+- *No renovar* solo es posible antes del fin del preaviso y en planes con renovación automática.
+- No se puede cambiar el plan de una suscripción cancelada o vencida, ni elegir el mismo plan.
+
+**Reglas de registro** (`ir.rule`, filtran qué filas ve cada usuario):
+
+- **Multicompañía:** planes, suscripciones y líneas solo son visibles en las compañías del usuario.
+- **Portal:** un usuario portal solo ve las suscripciones de cliente de su empresa y sus líneas.
+
+### Tablas transitorias (asistentes)
+
+Los asistentes son modelos `TransientModel`: sus tablas guardan datos temporales que Odoo borra periódicamente.
+
+| Tabla | Asistente |
+|---|---|
+| `subscription_order_confirm` y `subscription_order_confirm_line` | Confirmación de los cambios que hará un pedido en las suscripciones |
+| `subscription_close_wizard` | Cancelar o pausar suscripciones con motivo, nota y fecha de reanudación |
+| `subscription_change_plan_wizard` | Cambio de plan |
 
 ## Licencia
 
