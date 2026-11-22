@@ -5,12 +5,6 @@ Proyecto Final (TFM) del **Máster en Desarrollo con Inteligencia Artificial** (
 - **Autor:** Justo Alfocea Frutos
 - **Repositorio (entregable del proyecto):** [github.com/jusalf98/alfocea-odoo-modules](https://github.com/jusalf98/alfocea-odoo-modules)
 
-| Recurso | Enlace |
-|---|---|
-| Código fuente | https://github.com/jusalf98/alfocea-odoo-modules |
-| Despliegue | _Pendiente de publicar_ |
-| Presentación (slides) | _Pendiente de publicar_ |
-| Vídeo explicativo | _Pendiente de publicar_ |
 
 ---
 
@@ -101,6 +95,7 @@ La suite se ha diseñado por capas: un **núcleo** independiente, tres módulos 
 4. **Crea la base de datos.** Abre http://localhost:8069 y rellena el formulario:
    - **Master Password:** la imagen no trae ninguna configurada, así que Odoo propone una. Guárdala: se pide para crear, copiar o borrar bases de datos.
    - **Email y Password:** son el usuario y la contraseña con los que entrarás en Odoo. Usa los de la sección 6 si quieres que coincidan con los de prueba.
+   - **Datos de demostración:** márcalo para tener contactos, productos y el usuario portal de prueba (`portal` / `portal`).
 
 5. **Instala los módulos.** En *Aplicaciones*, busca e instala **Subscription Core** y los módulos de integración que necesites:
    - **Subscription Sale**, que instala también *Ventas*.
@@ -303,14 +298,24 @@ alfocea-odoo-modules/
 
 ## 6. Usuario y contraseña de prueba
 
-Odoo tiene login. Para la base de datos de prueba se usan estas credenciales:
+Se recomienda probar la suite en un Odoo 18 base, con **datos de demostración** y los módulos instalados (sección 3), entrando con estos dos usuarios. Cada uno representa un tipo de usuario de Odoo:
 
-| Entorno | URL | Usuario | Contraseña |
+- **Usuario interno** (`admin`): trabaja dentro del ERP, en el *backend*, y ve los menús y aplicaciones que le permiten sus grupos.
+- **Usuario portal** (`portal`): es un usuario externo, normalmente un **cliente o un proveedor**. **No tiene acceso al ERP**: solo entra en el portal web (*Mi cuenta*) y ve los documentos que cada módulo le deja ver, como sus pedidos o sus facturas. No ocupa licencia de usuario.
+
+Lo que ve un usuario portal lo decide la seguridad de cada módulo: permisos de acceso por modelo (`ir.model.access.csv`) y reglas de registro (`ir.rule`) que filtran los registros. En esta suite, `alfo_subscription_portal` le da permiso de lectura sobre las suscripciones, y sus reglas de registro dejan ver a cada cliente **solo las suscripciones de su empresa**. Las acciones (pausar, cancelar…) pasan por el controlador del portal, que comprueba antes si el plan las permite. Documentación oficial de Odoo:
+
+- [Acceso al portal (usuarios portal)](https://www.odoo.com/documentation/18.0/applications/general/users/portal.html)
+- [Seguridad en Odoo: grupos, permisos de acceso y reglas de registro](https://www.odoo.com/documentation/18.0/developer/reference/backend/security.html)
+
+| Rol | Usuario | Contraseña | Para qué sirve |
 |---|---|---|---|
-| Local (Docker) | http://localhost:8069 | `admin` | `admin` |
-| Despliegue | _Pendiente de publicar_ | _Pendiente_ | _Pendiente_ |
+| Administrador | `admin` | `admin` | Gestión completa: planes, suscripciones de clientes y de proveedores, pedidos, facturas, renovaciones e informes |
+| Portal (cliente externo) | `portal` | `portal` | Ver el lado del cliente en *Mi cuenta → Suscripciones*: consultar, descargar el PDF, pausar, reanudar, cancelar o pedir que no se renueve |
 
-En local, el usuario y la contraseña son los que se introducen al crear la base de datos (paso 4 de la instalación). Si se usan `admin` / `admin`, coinciden con la tabla. El usuario administrador tiene acceso completo a la app *Suscripciones* desde la instalación.
+- **Administrador:** es el usuario y la contraseña que se introducen al crear la base de datos (paso 4 de la instalación). Si se usan `admin` / `admin`, coinciden con la tabla. Tiene acceso completo a la app *Suscripciones* desde la instalación.
+- **Portal:** Odoo crea el usuario `portal` al marcar **Datos de demostración** al crear la base de datos. Sirve igual cualquier otro usuario portal: basta con dar acceso a un contacto en *Contactos → (el contacto) → Acción → Conceder acceso al portal* y ponerle una contraseña desde *Ajustes → Usuarios*.
+- **Clientes y proveedores:** para probar el lado cliente, crea una suscripción de venta (un pedido de venta confirmado) a nombre del contacto del usuario portal que uses y entra con ese usuario en otra ventana o en modo incógnito. El portal muestra solo las suscripciones de cliente; las de proveedor (`PSUB/…`) se prueban con el administrador, desde los pedidos de compra y el menú *Suscripciones*.
 
 ### Guion de prueba rápido
 
@@ -328,8 +333,9 @@ En local, el usuario y la contraseña son los que se introducen al crear la base
    3. Se crea la factura del periodo: de cliente o de proveedor, según el tipo de suscripción.
 7. **Portal del cliente:**
    1. En el plan, activa *Los clientes pueden pausar* y *pueden cancelar*.
-   2. Da acceso al portal al cliente (*Contactos → Acción → Conceder acceso al portal*).
-   3. Entra como ese cliente en *Mi cuenta → Suscripciones*: verás su suscripción, podrás descargar el PDF y pausarla o cancelarla.
+   2. Crea y confirma un presupuesto con un producto de suscripción para el contacto de un usuario portal (por ejemplo, el del usuario `portal` de los datos de demostración).
+   3. Entra con ese usuario portal en una ventana de incógnito y abre *Mi cuenta → Suscripciones*: verás su suscripción, podrás descargar el PDF y pausarla o cancelarla.
+   4. De vuelta como administrador, el chatter de la suscripción muestra la acción con el cliente como autor.
 8. **Análisis:** cancela una suscripción eligiendo un motivo y abre *Suscripciones → Informes → Bajas* y *Ingresos recurrentes (MRR)*.
 
 ## 7. Calidad y pruebas
